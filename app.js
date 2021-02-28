@@ -64,7 +64,7 @@ app.use((req, res, next) => {
 
 //Defining routes
 app.get("/", (req, res) => {
-    res.render("landingpage");
+    res.render("Landingpage");
 })
 
 app.use("/account", userRoutes);
