@@ -1,0 +1,25 @@
+<%- include("../partials/header") %>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4" id="profile">
+                <img src="Images/profile1.jpg" alt="profile">
+                <div class="alert alert-warning">
+                    <p>
+                        Once you update your username you will be redirected to login page
+                        where you need to login again with your new credentials.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <!-- update-form -->
+                <%- include("./update") %> 
+                <!-- Change password -->
+                <%- include("./passwordChange") %>
+                <!-- Delete form -->
+                <%- include("./delete") %> 
+            </div>
+        </div>
+    </div>
+
+<%- include("../partials/footer") %>

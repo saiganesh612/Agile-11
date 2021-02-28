@@ -1,0 +1,34 @@
+<%- include("../partials/header") %>
+
+    <div class="row">
+        <!-- Sidebar start -->
+        <div class="col-md-3 sidebar" id="sidebar">
+            <center>
+                <img src="Images/profile1.jpg" alt="">
+                <p>
+                    <%= currentUser.username %>
+                </p>
+            </center>
+            <hr>
+            <a href="/home">
+                <i class="bx bxs-home"></i> <span>Home</span>
+            </a>
+            <a href="/dashboard">
+                <i class="icofont-game-console"></i> <span>My Matches</span>
+            </a>
+            <a href="#">
+                <i class="icofont-chart-histogram"></i> <span>Metrices</span>
+            </a>
+            <a href="/settings">
+                <i class="icofont-ui-settings"></i> <span>Settings</span>
+            </a>
+        </div>
+        <!-- Sidebar end -->
+
+        <!-- Content start -->
+        <div class="col-md-9"></div>
+        <!-- Content end -->
+
+    </div>
+
+<%- include("../partials/footer") %>

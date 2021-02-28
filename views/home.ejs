@@ -1,0 +1,70 @@
+<%- include("partials/header") %>
+
+    <!-- Display live score section start -->
+    <div class="container">
+        <h1 class="my-3">live scores</h1>
+        <div class="row score d-flex justify-content-center">
+            
+            <% matchList.matchList.matches.forEach(match => { %>
+
+                <% if(match.status === "LIVE" || match.status === "INPROGRESS"){ %> 
+                    
+                    <div class="col-md-4 col-sm-6 card">
+                        <div class="card-body">
+                            <h4 class="card-title"><%= match.series.name %></h4>
+                            <p class="card-text">
+                                <b>Status:</b> <%= match.currentMatchState %> <br>
+                                <b>Venue:</b> <%= match.venue.name %> <br>
+                                <b>Hometeam:</b> <%= match.homeTeam.name %>( <%= match.homeTeam.shortName %> ) <br>
+                                <b>Awayteam:</b> <%= match.awayTeam.name %>( <%= match.awayTeam.shortName %> ) <br>
+                                <b>Summary</b> <%= match.matchSummaryText %> <br>
+                            </p>
+                            <a href="#" class="btn btn-outline-primary btn-lg my-3">more info</a>
+                        </div>
+                    </div>
+
+                <% } else if(match.status === "UPCOMING"){ %> 
+
+                    <div class="col-md-4 col-sm-6 card">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <%= match.series.name %>
+                            </h4>
+                            <p class="card-text">
+                                <b>Status:</b> <%= match.currentMatchState %> <br>
+                                <b>Venue:</b> <%= match.venue.name %> <br>
+                                <b>Startdate:</b> <%= new Date(match.startDateTime).toString().substring(0, 25) %> <br>
+                                <b>Enddate:</b> <%= new Date(match.endDateTime).toString().substring(0, 25) %> <br>
+                            </p>
+                            <br>
+                            <!-- <a href="#" class="btn btn-outline-primary">more info</a> -->
+                        </div>
+                    </div>
+
+                <% } else if(match.status === "COMPLETED") { %> 
+
+                    <div class="col-md-4 col-sm-6 card">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <%= match.series.name %>
+                            </h4>
+                            <p class="card-text">
+                                <b>Status:</b> <%= match.currentMatchState %> <br>
+                                <b>Venue:</b> <%= match.venue.name %> <br>
+                                <b>Hometeam:</b> <%= match.homeTeam.name %>( <%= match.homeTeam.shortName %> ) <br>
+                                <b>Awayteam:</b> <%= match.awayTeam.name %>( <%= match.awayTeam.shortName %> ) <br>
+                                <b>Startdate:</b> <%= new Date(match.startDateTime).toString().substring(0, 25) %> <br>
+                                <b>Enddate:</b> <%= new Date(match.endDateTime).toString().substring(0, 25) %> <br>
+                            </p>
+                            <a href="#" class="btn btn-outline-primary btn-lg py-2 my-3">more info</a>
+                        </div>
+                    </div>
+
+                <% } %> 
+            <% }); %> 
+
+        </div>
+    </div>
+    <!-- Display live score section end -->
+
+<%- include("partials/footer") %>

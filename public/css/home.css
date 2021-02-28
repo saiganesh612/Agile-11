@@ -1,0 +1,35 @@
+body{
+    background-image: url("../Images/home.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
+}
+
+h2, h3, hr{
+    color: white;
+    text-align: center;
+}
+
+.navbar-brand, .nav-link{
+    font-weight: 600;
+}
+
+.container h1{
+    color: white;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.score div{
+    margin: 1em;
+    padding: 1px;
+    text-align: center;
+    box-shadow: -10px 8px 7px rgba(0, 0, 0, 0.6);
+}
+
+.card-body a{
+    text-transform: capitalize;
+    border-radius: 40px;
+}

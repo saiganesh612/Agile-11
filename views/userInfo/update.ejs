@@ -1,0 +1,32 @@
+
+<div class="container update-form"><br>
+    <h2> My details </h2>
+    <hr>
+    <form action="/settings?_method=PUT" method="POST" class="validate-form" novalidate>
+        <div class="form-floating mb-3">
+            <input class="form-control" id="username" type="text" name="username" value="<%= currentUser.username %>"
+                placeholder="Enter your username..." required>
+            <label for="username">User Name</label>
+            <div class="valid-feedback">
+                Looks good!!
+            </div>
+            <div class="invalid-feedback">
+                Please enter name
+            </div>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" id="email" type="email" name="email" value="<%= currentUser.email %>"
+                placeholder="Enter your email" required>
+            <label for="email">Email address</label>
+            <div class="valid-feedback">
+                Looks good!!
+            </div>
+            <div class="invalid-feedback">
+                Enter valid email id!
+            </div>
+        </div>
+        <button class="btn btn-outline-success btn-lg">
+            Update my details
+        </button>
+    </form>
+</div>

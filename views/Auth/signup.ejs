@@ -1,0 +1,49 @@
+<%- include("../partials/header") %>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+                <div class="card shadow">
+                    <img src="/Images/Logo.png" alt="logo" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title text-center mb-3">Sign up</h5>
+                        <form action="/account/signup" method="POST" class="validate-form" novalidate>
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="username" type="text"
+                                    placeholder="Enter your username..." name="username" required>
+                                <label for="username">User Name</label>
+                                <div class="valid-feedback">
+                                    Looks good!!
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="email" type="email" placeholder="Enter your email"
+                                    name="email" required>
+                                <label for="email">Email address</label>
+                                <div class="valid-feedback">
+                                    Looks good!!
+                                </div>
+                                <div class="invalid-feedback">
+                                    Enter valid email id!
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="password" type="password" placeholder="Enter password"
+                                    name="password" required>
+                                <label for="password">Password</label>
+                                <div class="valid-feedback">
+                                    Looks good!!
+                                </div>
+                            </div>
+                            <div>
+                                &nbsp;<span>Have an account? <a href="/account/login">Login</a></span>&nbsp;
+                                &nbsp;<button class="btn btn-outline-success">Create an account</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<%- include("../partials/footer") %>

@@ -1,0 +1,94 @@
+*{
+  margin: 0;
+  padding: 0;
+  text-decoration: none !important;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url("../Images/jordan-rowland-Q64WE8Xo9bs-unsplash.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  height: 95vh;
+  width: 98vw;
+}
+
+.sidebar{
+  background: #2f323a;
+  position: relative;
+  left: 0;
+  width: 300px;
+  height: 100vh;
+  padding: 0;
+  transition: 0.5s;
+  overflow-y: auto;
+}
+
+.sidebar center img{
+  margin: 20px 0;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.sidebar center p{
+  color: #bbc;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+hr{
+  border-top: 2px solid whitesmoke;
+}
+
+.sidebar a{
+  width: 100%;
+  font-size: 1.125em;
+  padding-left: 40px;
+  color: #ccc;
+  display: block;
+  line-height: 60px;
+  transition: 0.3s;
+  transition-property: width, color;
+}
+
+.sidebar a:hover{
+  color: #19b3d3;
+}
+
+.sidebar a i{
+  padding-right: 20px;
+}
+
+.navbar-brand, .nav-link{
+  font-weight: 600;
+}
+
+@media (max-width: 767px) {
+
+  .sidebar{
+    width: 93px;
+  }
+
+  .sidebar center img,
+  .sidebar center p,
+  .sidebar hr,
+  .sidebar a span{
+    display: none;
+    transition: 0.5s;
+  }
+
+  .sidebar a{
+    padding: 0;
+  }
+
+  .sidebar a i{
+    padding-left: 30px;
+    line-height: 2em;
+    font-size: 2em;
+  }
+
+}
