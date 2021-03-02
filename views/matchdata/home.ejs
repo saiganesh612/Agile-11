@@ -1,4 +1,4 @@
-<%- include("partials/header") %>
+<%- include("../partials/header") %>
 
     <!-- Display live score section start -->
     <div class="container">
@@ -19,7 +19,7 @@
                                 <b>Awayteam:</b> <%= match.awayTeam.name %>( <%= match.awayTeam.shortName %> ) <br>
                                 <b>Summary</b> <%= match.matchSummaryText %> <br>
                             </p>
-                            <a href="#" class="btn btn-outline-primary btn-lg my-3">more info</a>
+                            <a href="/score/<%= match.id %>/<%= match.series.id %>" class="btn btn-outline-primary btn-lg my-3">more info</a>
                         </div>
                     </div>
 
@@ -56,7 +56,7 @@
                                 <b>Startdate:</b> <%= new Date(match.startDateTime).toString().substring(0, 25) %> <br>
                                 <b>Enddate:</b> <%= new Date(match.endDateTime).toString().substring(0, 25) %> <br>
                             </p>
-                            <a href="#" class="btn btn-outline-primary btn-lg py-2 my-3">more info</a>
+                            <a href="/score/<%= match.id %>/<%= match.series.id %>" class="btn btn-outline-primary btn-lg py-2 my-3">more info</a>
                         </div>
                     </div>
 
@@ -67,4 +67,4 @@
     </div>
     <!-- Display live score section end -->
 
-<%- include("partials/footer") %>
+<%- include("../partials/footer") %>

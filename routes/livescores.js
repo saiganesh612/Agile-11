@@ -4,14 +4,14 @@ const api = require("../apis/index");
 
 router.get("/home", async (req, res) => {
     let matchList = await api.getListOfMatches();
-    res.render("home", { style: 'home', matchList });
+    res.render("matchdata/home", { style: 'home', matchList });
     console.log("data sent successfully");
 })
 
-router.get("/score", async (req, res) => {
-    const data = await api.getListOfMatches();
-    res.send(data);
+router.get("/score/:matchid/:seriesid", async (req, res) => {
+    const { matchid, seriesid } = req.params;
+    const data = await api.getScoreCard(matchid, seriesid);
+    res.render("matchdata/scorecard", { style: 'settings', data })
 })
 
 module.exports = router;
-
