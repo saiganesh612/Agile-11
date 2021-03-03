@@ -11,7 +11,7 @@ router.get("/home", async (req, res) => {
 router.get("/score/:matchid/:seriesid", async (req, res) => {
     const { matchid, seriesid } = req.params;
     const data = await api.getScoreCard(matchid, seriesid);
-    res.render("matchdata/scorecard", { style: 'settings', data })
+    res.render("matchdata/scorecard", { style: 'scorecard', data })
 })
 
 module.exports = router;

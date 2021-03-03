@@ -1,6 +1,74 @@
 <%- include("../partials/header") %> 
 
-<%= data.meta.series.name %> <br><br>
-<%= data  %> 
+<div class="container">
+
+    <br><h2> <%= data.meta.series.name %> </h2><hr><br>
+
+    <div class="row">
+
+        <!-- List of team-1 players -->
+        <div class="col-md-4 offset-md-2 col-sm-10 offset-sm-2">
+            
+            <h3> <%= data.fullScorecard.innings[0].team.shortName %> </h3>
+            <h4>List of Batsmen</h4>
+            <% data.fullScorecard.innings[0].batsmen.forEach(player => { %>
+                <p> <%= player.name %> </p>
+            <% }) %> 
+
+            <h4 class="pt-3">List of Bowlers</h4>
+            <% data.fullScorecard.innings[0].bowlers.forEach(player=> { %>
+                <p> <%= player.name %> </p>
+            <% }) %>
+
+        </div>
+
+        <!-- List of team-2 players -->
+        <div class="col-md-4 offset-md-2 col-sm-10 offset-sm-2 ml-0">
+        
+            <h3> <%= data.fullScorecard.innings[1].team.shortName %> </h3>
+            <h4>List of Batsmen</h4>
+            <% data.fullScorecard.innings[1].batsmen.forEach(player=> { %>
+                <p> <%= player.name %> </p>
+            <% }) %>
+        
+            <h4 class="pt-3">List of Bowlers</h4>
+            <% data.fullScorecard.innings[1].bowlers.forEach(player=> { %>
+                <p> <%= player.name %> </p>
+            <% }) %>
+        
+        </div>
+    </div><br>
+
+    <h2>Innings wise analysis</h2><hr><br>
+    <div class="row d-flex justify-content-evenly details">
+        <% inningsId = data.fullScorecard.innings.length %> 
+
+        <% if(data.fullScorecard.innings.length === 1){ %>
+            <% prefix=[ 'st' ] %>
+        <% } else if(data.fullScorecard.innings.length === 2){ %>
+            <% prefix=[ 'nd' , 'st' ] %>
+        <% } else if(data.fullScorecard.innings.length === 3){ %>
+            <% prefix=[ 'rd' , 'nd' , 'st' ] %>
+        <% } else { %>
+            <% prefix=['th', 'rd' , 'nd' , 'st' ] %>
+        <% } %> 
+
+        <% data.fullScorecard.innings.forEach((match, index) => { %>
+
+            <div class="col-md-2 col-sm-4 offset-sm-2 mx-5">
+                <h3> 
+                    <%= (inningsId - index) + prefix[index] %> innings (<%= data.fullScorecard.innings[index].team.shortName %>) 
+                </h3>
+                <p><b>Runs: </b> <%= match.run %> </p>
+                <p><b>Overs: </b> <%= match.over %> </p>
+                <p><b>Wickets: </b> <%= match.wicket %>  </p>
+                <p><b>Runrate: </b> <%= match.runRate %>  </p>
+            </div>
+
+        <% }) %> 
+        
+    </div><br>
+
+</div>
 
 <%- include("../partials/footer") %>
