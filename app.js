@@ -71,6 +71,10 @@ app.use("/account", userRoutes);
 app.use(scoreRoutes);
 app.use(infoRoutes);
 
+app.get("/error", (req, res) => {
+    res.send("Something went wrong!!");
+})
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);

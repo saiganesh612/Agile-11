@@ -7,11 +7,34 @@
     text-align: center;
 }
 
+.row div img{
+    width: 300px;
+    height: 200px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
 .row div p{
     margin: 0 !important;
+    cursor: pointer;
+}
+
+#player-details{
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.row div p:hover + #player-details{
+    position: absolute;
+    display: block;
+    z-index: 6;
+}
+
+#player-details{
+    display: none;
 }
 
 .details div{
+    width: 250px;
+    height: 220px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     padding: 1.5em;
     border-radius: 5px;
@@ -34,4 +57,17 @@
 
 .details div:hover::after {
     opacity: 1;
+}
+
+@media (max-width: 992px){
+    .row div img{
+        width: 220px;
+        height: 150px;
+    }
+}
+
+@media (max-width: 768px), (min-width: 769px) {
+    .details div{
+        margin-top: 1.5em;
+    }
 }

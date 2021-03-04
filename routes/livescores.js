@@ -3,15 +3,31 @@ const router = express.Router();
 const api = require("../apis/index");
 
 router.get("/home", async (req, res) => {
-    let matchList = await api.getListOfMatches();
-    res.render("matchdata/home", { style: 'home', matchList });
-    console.log("data sent successfully");
+    try {
+        let matchList = await api.getListOfMatches();
+        res.render("matchdata/home", { style: 'home', matchList });
+        console.log("data sent successfully");
+    } catch (e) {
+        console.log(e.message);
+        res.redirect("/error");
+    }
 })
 
-router.get("/score/:matchid/:seriesid", async (req, res) => {
+router.get("/score/:matchid/:seriesid", (req, res) => {
     const { matchid, seriesid } = req.params;
-    const data = await api.getScoreCard(matchid, seriesid);
-    res.render("matchdata/scorecard", { style: 'scorecard', data })
+    Promise.allSettled([
+        api.getScoreCard(matchid, seriesid),
+        api.getPlayersList(matchid, seriesid)
+    ]).then((response) => {
+        res.render("matchdata/scorecard", { 
+            style: 'scorecard', 
+            data: response[0].value,
+            playersList: response[1].value 
+        });
+    }).catch((e) => {
+        console.log(e.message);
+        res.redirect("/error")
+    })
 })
 
 module.exports = router;

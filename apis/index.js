@@ -46,4 +46,26 @@ data.getScoreCard = (matchid, seriesid) => {
     })
 }
 
+data.getPlayersList = (matchid, seriesid) => {
+    return new Promise((resolve, reject) => {
+        unirest
+            .get("https://dev132-cricket-live-scores-v1.p.rapidapi.com/playersbymatch.php")
+            .query({
+                "seriesid": seriesid,
+                "matchid": matchid
+            })
+            .headers({
+                "x-rapidapi-key": process.env.API_KEY,
+                "x-rapidapi-host": process.env.API_HOST,
+                "useQueryString": true
+            })
+            .end(response => {
+                if (response.error) {
+                    return reject(response.error)
+                }
+                return resolve(response.body);
+            })
+    })
+}
+
 module.exports = data;
