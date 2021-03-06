@@ -18,8 +18,8 @@ const scoreRoutes = require("./routes/livescores");
 const infoRoutes = require("./routes/userInfo");
 
 //Connecting to database
-// const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/Agile11";
-mongoose.connect("mongodb://localhost:27017/Agile11", {
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/Agile11";
+mongoose.connect(dbUrl, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,
