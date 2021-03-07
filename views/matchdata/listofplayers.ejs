@@ -1,0 +1,50 @@
+
+<div class="row">
+
+    <!-- List of team-1 players -->
+    <div class="col-md-4 offset-md-2 col-sm-10 offset-sm-2">
+        <h3> <%= playersList.playersInMatch.homeTeam.teamShortName %> </h3>
+        <img class="p-3" src="<%= playersList.playersInMatch.homeTeam.team.logoUrl %>" alt="teamlogo">
+        <h4>List of Players</h4>
+        <% playersList.playersInMatch.homeTeam.players.forEach(player => { %>
+            <p> <%= player.fullName %> </p>
+            <div id="player-details" class="card" style="width: 18rem;">
+                <img class="card-img-top" src="<%= player.imageURL %> " alt="playerimage">
+                <div class="card-body">
+                    <p class="card-text"> <b>Name: </b> <%= player.fullName %> </p>
+                    <p class="card-text"> <b>Batting-style: </b> <%= player.battingStyle %> </p>
+                    <p class="card-text"> <b>Bowling-style: </b> <%= player.bowlingStyle %> </p>
+                    <p class="card-text"> <b>Type-of-player: </b> <%= player.playerType %> </p>  
+                    <p class="card-text"> <b>DOB: </b> <%= new Date(player.dob).toString().substring(0, 25) %> </p> 
+                    <p class="card-text"> <b>Test-debut-date: </b> <%= new Date(player.testDebutDate).toString().substring(0, 25) %> </p>
+                    <p class="card-text"> <b>ODI-debut-date: </b> <%= new Date(player.odiDebutDate).toString().substring(0, 25) %> </p>    
+                    <p class="card-text"> <b>T20-debut-date: </b> <%= new Date(player.t20DebutDate).toString().substring(0, 25) %> </p>     
+                </div>
+            </div>
+        <% }) %> 
+    </div>
+
+    <!-- List of team-2 players -->
+    <div class="col-md-4 offset-md-2 col-sm-10 offset-sm-2 ml-0">
+        <h3> <%= playersList.playersInMatch.awayTeam.teamShortName %> </h3>
+        <img class="p-3" src="<%= playersList.playersInMatch.awayTeam.team.logoUrl %>" alt="teamlogo">
+        <h4>List of Players</h4>
+        <% playersList.playersInMatch.awayTeam.players.forEach(player=> { %>
+            <p> <%= player.fullName %> </p>
+            <div id="player-details" class="card" style="width: 18rem;">
+                <img class="card-img-top" src="<%= player.imageURL %> " alt="playerimage">
+                <div class="card-body">
+                    <p class="card-text"> <b>Name: </b> <%= player.fullName %> </p>
+                    <p class="card-text"> <b>Batting-style: </b> <%= player.battingStyle %> </p>
+                    <p class="card-text"> <b>Bowling-style: </b> <%= player.bowlingStyle %> </p>
+                    <p class="card-text"> <b>Type-of-player: </b> <%= player.playerType %> </p>  
+                    <p class="card-text"> <b>DOB: </b> <%= new Date(player.dob).toString().substring(0, 25) %> </p> 
+                    <p class="card-text"> <b>Test-debut-date: </b> <%= new Date(player.testDebutDate).toString().substring(0, 25) %> </p>
+                    <p class="card-text"> <b>ODI-debut-date: </b> <%= new Date(player.odiDebutDate).toString().substring(0, 25) %> </p>    
+                    <p class="card-text"> <b>T20-debut-date: </b> <%= new Date(player.t20DebutDate).toString().substring(0, 25) %> </p>     
+                </div>
+            </div>
+        <% }) %>
+    </div>
+    
+</div><br>

@@ -1,0 +1,28 @@
+
+<h2>Innings wise analysis</h2>
+<div class="row d-flex justify-content-evenly details">
+    <% inningsId = data.fullScorecard.innings.length %> 
+
+    <% if(data.fullScorecard.innings.length === 1){ %>
+        <% prefix=[ 'st' ] %>
+    <% } else if(data.fullScorecard.innings.length === 2){ %>
+        <% prefix=[ 'nd' , 'st' ] %>
+    <% } else if(data.fullScorecard.innings.length === 3){ %>
+        <% prefix=[ 'rd' , 'nd' , 'st' ] %>
+    <% } else { %>
+        <% prefix=['th', 'rd' , 'nd' , 'st' ] %>
+    <% } %> 
+
+    <% data.fullScorecard.innings.forEach((match, index) => { %>
+        <div class="col-md-2 col-sm-4 offset-sm-2 mx-5">
+            <h3> 
+                <%= (inningsId - index) + prefix[index] %> innings (<%= data.fullScorecard.innings[index].team.shortName %>) 
+            </h3>
+            <p><b>Runs: </b> <%= match.run %> </p>
+            <p><b>Overs: </b> <%= match.over %> </p>
+            <p><b>Wickets: </b> <%= match.wicket %>  </p>
+            <p><b>Runrate: </b> <%= match.runRate %>  </p>
+        </div>
+    <% }) %> 
+    
+</div><br>

@@ -1,0 +1,47 @@
+
+<h2>Score card</h2>
+<div class="row score-card">
+    <div class="col-md-8 offset-md-2">
+        <h6 style="background-color: #f1f2f6; padding: 5px; border-radius: 5px;">
+            Batting <span>R(B) SR </span>
+        </h6>
+        <% liveData.matchDetail.currentBatters.forEach(batter => { %>
+            <p class="scores" style="display: flex; justify-content: space-between;">
+                <span><%= batter.name.replace(" ", "-") %><%= batter.isFacing ? '*' : '' %></span>
+                <span><%= batter.runs %>(<%= batter.ballsFaced %>) <%= batter.strikeRate %></span>
+            </p>
+        <% }) %> 
+        <br>
+        <% let bowler=liveData.matchDetail.bowler %>
+        <h6 style="background-color: #f1f2f6; padding: 5px; border-radius: 5px;">
+            Bowling <span>O R W</span>
+        </h6>
+        <p class="scores" style="display: flex; justify-content: space-between;">
+            <span><%= bowler.name.replace(" ", "-") %></span> 
+            <span><%= bowler.bowlerOver %> <%= bowler.runsAgainst %> <%= bowler.wickets %></span>
+        </p>
+    </div>    
+
+    <% data.fullScorecard.innings.forEach((match, index) => { %>
+        <div class="col-md-8 offset-md-2" style="margin-top: 2em;">
+            <h4 style="color: #2C3A47;"><em> <%= match.id + prefix[index] %> innings </em></h4>
+            <div class="row">
+                <h6>Player <span> R B 4s 6s SR </span></h6>
+                <% match.batsmen.forEach(player => { %>
+                    <div style="padding-top: 15px;">
+                        <p class="scores">
+                            <span><%= player.name.replace(" ", "-") %></span>
+                            <span>
+                                <%= player.runs ? player.runs : '-' %> <%= player.balls ? (player.balls) : "-" %>                
+                                <%= player.fours ? player.fours : '-' %> <%= player.sixes ? player.sixes : '-' %> 
+                                <%= player.strikeRate ? player.strikeRate : '-' %>
+                            </span> 
+                        </p>
+                        <p> <em> <%= player.howOut %>  </em> </p>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    <% }) %> 
+
+</div><br>

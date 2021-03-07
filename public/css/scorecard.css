@@ -1,6 +1,12 @@
 .container h2{
     text-align: center;
     font-weight: bold;
+    background-color: #182C61;
+    padding: 0.3em;
+    border-radius: .5em;
+    color: #CAD3C8;
+    margin-top: 7px;
+    margin-bottom: 1em;
 }
 
 .row div{
@@ -8,7 +14,7 @@
 }
 
 .row div img{
-    /* width: 300px; */
+    width: 300px;
     height: 200px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
@@ -76,6 +82,40 @@
 
 .details div:hover::after {
     opacity: 1;
+}
+
+.score-card div{
+    text-align: start;
+}
+
+.score-card h6{
+    color: #757575;
+    word-spacing: 5em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.score-card h6 span{
+    color: #757575;
+}
+
+.score-card span{
+    color: #0069b9;
+    font-weight: 700;
+}
+
+.score-card div:nth-of-type(n+2) p:nth-child(odd){
+    background-color: #f1f2f6;
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.scores span:nth-of-type(2){
+    word-spacing: 5em;
+    color: #000;
+    /* font-weight: 600; */
 }
 
 @media (max-width: 992px){
