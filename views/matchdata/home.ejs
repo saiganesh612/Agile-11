@@ -19,7 +19,9 @@
                                 <b>Awayteam:</b> <%= match.awayTeam.name %>( <%= match.awayTeam.shortName %> ) <br>
                                 <b>Summary</b> <%= match.matchSummaryText %> <br>
                             </p>
-                            <a href="/score/<%= match.id %>/<%= match.series.id %>" class="btn btn-outline-primary btn-lg my-3">more info</a>
+                            <a href="/score/<%= match.id %>/<%= match.series.id %>" class="btn btn-outline-primary btn-lg my-3">
+                                more info <i class="icofont-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
 
@@ -56,7 +58,9 @@
                                 <b>Startdate:</b> <%= new Date(match.startDateTime).toString().substring(0, 25) %> <br>
                                 <b>Enddate:</b> <%= new Date(match.endDateTime).toString().substring(0, 25) %> <br>
                             </p>
-                            <a href="/score/<%= match.id %>/<%= match.series.id %>" class="btn btn-outline-primary btn-lg py-2 my-3">more info</a>
+                            <a href="/score/<%= match.id %>/<%= match.series.id %>" class="btn btn-outline-primary btn-lg py-2 my-3">
+                                more info <i class="icofont-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
 

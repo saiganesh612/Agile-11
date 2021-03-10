@@ -43,11 +43,6 @@
                 aria-controls=" navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <!-- <div class="sidebar-btn" data-toggle="collapse" data-target="#sidebar">
-                <span>
-                    <i class='bx bx-dots-vertical-rounded'></i>
-                </span>
-            </div> -->
             <div class="collapse navbar-collapse" id="navbarItems">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
@@ -62,13 +57,19 @@
                 </ul>
                 <div class="navbar-nav">
                     <% if(!currentUser) { %> 
-                        <a href="/account/login" class="nav-link mr-sm-2">LogIn</a>
-                        <a href="/account/signup" class="nav-link mr-sm-2">SignUp</a>
+                        <a href="/account/login" class="nav-link mr-sm-2">
+                            <i class="icofont-sign-in"></i> LogIn
+                        </a>
+                        <a href="/account/signup" class="nav-link mr-sm-2">
+                            SignUp
+                        </a>
                     <% } else { %> 
                         <p>
                             SignedIn as <em>-<%= currentUser.username %> </em> 
                         </p>
-                        <a href="/account/logout" class="nav-link mr-sm-2">Logout</a>
+                        <a href="/account/logout" class="nav-link mr-sm-2">
+                            <i class="icofont-logout"></i> SignOut
+                        </a>
                     <% } %> 
                 </div>
             </div>
