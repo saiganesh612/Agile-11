@@ -1,5 +1,5 @@
 
-<h2>Score card</h2>
+<h2>Scorecard</h2>
 <div class="row score-card">
     <div class="col-md-8 offset-md-2">
         <h6 style="background-color: #f1f2f6; padding: 5px; border-radius: 5px;">
@@ -25,21 +25,35 @@
     <% data.fullScorecard.innings.forEach((match, index) => { %>
         <div class="col-md-8 offset-md-2" style="margin-top: 2em;">
             <h4 style="color: #2C3A47;"><em> <%= match.id + prefix[index] %> innings </em></h4>
-            <div class="row">
-                <h6>Player <span> R(B) 4s 6s SR </span></h6>
+            <div class="row labels">
+                <h6>Batsmen <span> R(B) 4s 6s SR </span></h6>
                 <% match.batsmen.forEach(player => { %>
                     <div style="padding-top: 15px;">
                         <p class="scores">
                             <span><%= player.name.replace(" ", "-") %></span>
                             <span>
-                                <%= player.runs ? player.runs : '-' %>(<%= player.balls ? player.balls : "-" %>)                
-                                <%= player.fours ? player.fours : '-' %> <%= player.sixes ? player.sixes : '-' %> 
-                                <%= player.strikeRate ? player.strikeRate : '-' %>
+                                <%= player.runs ? player.runs : '0' %>(<%= player.balls ? player.balls : "0" %>)                
+                                <%= player.fours ? player.fours : '0' %> <%= player.sixes ? player.sixes : '0' %> 
+                                <%= player.strikeRate && player.strikeRate !== '-' ? player.strikeRate : "0" %>
                             </span> 
                         </p>
                         <p> <em> <%= player.howOut %>  </em> </p>
                     </div>
                 <% }) %>
+                <br><br><br><br>
+                <h6>Bowler <span style="word-spacing: 2em;">O M R W NB WD ECO</span></h6>
+                <% match.bowlers.forEach(bowler => { %>
+                    <div>
+                        <p class="bowlers">
+                            <span><%= bowler.name.replace(" ", "-") %> </span>
+                            <span>
+                                <%= bowler.overs %> <%= bowler.maidens %> <%= bowler.runsConceded %>
+                                <%= bowler.wickets %> <%= bowler.noBalls %> <%= bowler.wides %>
+                                <%= bowler.economy %>      
+                            </span>
+                        </p>
+                    </div>
+                <% }) %> 
             </div>
         </div>
     <% }) %> 
