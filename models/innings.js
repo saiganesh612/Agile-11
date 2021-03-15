@@ -13,6 +13,7 @@ const inningSchema = new mongoose.Schema({
             balls: Number,
             fours: Number,
             sixes: Number,
+            strikeRate: String,
             howOut: String
         }
     ],
@@ -20,7 +21,7 @@ const inningSchema = new mongoose.Schema({
         {
             name: String,
             overs: Number,
-            Wickets: Number,
+            wickets: Number,
             runsConceded: Number,
             wides: Number,
             eco: Number

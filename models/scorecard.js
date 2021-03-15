@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 
 const scorecardSchema = new mongoose.Schema({
-    matchName: String,
+    matchName: {
+        type: String,
+        unique: true
+    },
     innings: [
         {
             type: mongoose.Schema.Types.ObjectId,

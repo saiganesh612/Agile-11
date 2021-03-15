@@ -12,14 +12,16 @@ const flash = require("connect-flash");
 const methodOverride = require("method-override");
 
 const User = require("./models/user");
+const Scorecard = require("./models/scorecard");
+const Innings = require("./models/innings");
 
 const userRoutes = require("./routes/Auth");
 const scoreRoutes = require("./routes/livescores");
 const infoRoutes = require("./routes/userInfo");
 
 //Connecting to database
-const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/Agile11";
-mongoose.connect(dbUrl, {
+// const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/Agile11";
+mongoose.connect("mongodb://localhost:27017/Agile11", {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,
