@@ -3,11 +3,12 @@ const mongoose = require("mongoose")
 const inningSchema = new mongoose.Schema({
     id: {
         type: Number,
-        enum: [1, 2, 3, 4],
-        unique: true
+        // enum: [1, 2, 3, 4],
+        // unique: true
     },
     batsmen: [
         {
+            _id: false,
             name: String,
             runs: Number,
             balls: Number,
@@ -19,6 +20,7 @@ const inningSchema = new mongoose.Schema({
     ],
     bowlers: [
         {
+            _id: false,
             name: String,
             overs: Number,
             wickets: Number,

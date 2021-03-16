@@ -60,7 +60,7 @@ const getListOfCompletedMatchIds = async () => {
     }
 }
 
-const generateInningDocument = (inning) => {
+const generateInningsDocument = (inning) => {
     let id = inning.id, wicket = inning.wicket, run = inning.run, over = inning.over, runRate = inning.runRate
 
     let batters = [], bowlers = [];
@@ -84,39 +84,49 @@ const generateInningDocument = (inning) => {
 }
 
 const getInningsdata = async (ids) => {
-    for (let id of ids) {
-        let { matchid, seriesid } = id;
-        let data = await api.getScoreCard(matchid, seriesid);
-        let { name } = data.meta.series;
-        let sc = await Scorecard.findOne({ matchName: name })
-        if (!sc) {
-            // Create new scorecard and add 1st innings
-            let newMatch = new Scorecard({ matchName: name });
-            // add 1st innings
-            let { innings } = data.fullScorecard;
-            innings.forEach(async inning => {
-                try {
-                    let newInning = generateInningDocument(inning)
-                    // console.log(newInning);
-                    let i = new Innings(newInning)
-                    await i.save();
-                    newMatch.innings.push(i);
+    try {
+        for (let id of ids) {
+            let { matchid, seriesid } = id;
+            let data = await api.getScoreCard(matchid, seriesid);
+            let { name } = data.meta.series;
+            let sc = await Scorecard.findOne({ matchName: name })
+            if (!sc) {
+                // Create new scorecard
+                let newMatch = new Scorecard({ matchName: name });
+                // create innings instance
+                let { innings } = data.fullScorecard;
+                let i = innings.map(inning => {
+                    let inn = generateInningsDocument(inning);
+                    let newInning = new Innings(inn);
+                    return newInning.save();
+                })
+                let inning = await Promise.all(i);
+                // add innings to scorecard and commit the scorecard to make changes
+                newMatch.innings.push(...inning);
+                await newMatch.save();
+                console.log("scorecard created successfully");
 
-                } catch (err) {
-                    console.log(err.message);
+            } else {
+                // checks whether current innings present in database
+                let { innings } = data.fullScorecard;
+                if (sc.innings.length < innings.length) {
+                    let len = innings.length - sc.innings.length;
+                    for (let i = 0; i < len; i++) {
+                        let inn = generateInningsDocument(innings[i]);
+                        let newInning = new Innings(inn);
+                        await newInning.save();
+                    }
                 }
-            })
-            await newMatch.save();
-            console.log("scorecard created successfully");
-        } else {
-            // checks whether current innings present in database
-            console.log("this match is there")
+            }
         }
+
+    } catch (err) {
+        console.log(err.message);
     }
 }
 
 setInterval(() => {
     init();
-}, 10000);
+}, 1000 * 60 * 60 * 24);  // This code will be executed once in 24hrs.
 
 module.exports = router;
