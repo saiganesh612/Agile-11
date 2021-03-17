@@ -37,7 +37,7 @@ router.get("/score/:matchid/:seriesid", (req, res) => {
 // Saving match data to our database in every paticular time period
 const init = async () => {
     let ids = await getListOfCompletedMatchIds();
-    getInningsdata(ids);
+    getInningsdataAndCommitChanges(ids);
 }
 
 const getListOfCompletedMatchIds = async () => {
@@ -83,7 +83,7 @@ const generateInningsDocument = (inning) => {
     return newInning;
 }
 
-const getInningsdata = async (ids) => {
+const getInningsdataAndCommitChanges = async (ids) => {
     try {
         for (let id of ids) {
             let { matchid, seriesid } = id;
@@ -107,15 +107,22 @@ const getInningsdata = async (ids) => {
                 console.log("scorecard created successfully");
 
             } else {
-                // checks whether current innings present in database
                 let { innings } = data.fullScorecard;
+                let newInnings = [];
+                // checks whether current innings present in database
                 if (sc.innings.length < innings.length) {
                     let len = innings.length - sc.innings.length;
                     for (let i = 0; i < len; i++) {
                         let inn = generateInningsDocument(innings[i]);
                         let newInning = new Innings(inn);
-                        await newInning.save();
+                        newInnings.push(newInning.save());
                     }
+                    let i = await Promise.all(newInnings);
+                    sc.innings.push(...i);
+                    await sc.save();
+                    console.log("New innings added successfully");
+                } else {
+                    console.log("Their is no new inning to add");
                 }
             }
         }
