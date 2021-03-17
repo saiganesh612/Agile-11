@@ -157,3 +157,18 @@
         margin-top: 1.5em;
     }
 }
+
+@media (max-width: 392px){
+    .scores span:nth-of-type(2){
+        word-spacing: 3.5em;
+    }
+    .labels h6 span, .score-card h6 span{
+        word-spacing: 3em;
+    }
+    .bowlers span:nth-of-type(2){
+        word-spacing: 2em;
+    }
+    .b-headings{
+        word-spacing: 1.4em !important;
+    }
+}
