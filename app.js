@@ -10,6 +10,7 @@ const passport = require("passport");
 const localStrategy = require("passport-local");
 const flash = require("connect-flash");
 const methodOverride = require("method-override");
+const session = require("express-session");
 
 const User = require("./models/user");
 const Scorecard = require("./models/scorecard");
@@ -20,8 +21,8 @@ const scoreRoutes = require("./routes/livescores");
 const infoRoutes = require("./routes/userInfo");
 
 //Connecting to database
-const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/Agile11";
-mongoose.connect(dbUrl, {
+// const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/Agile11";
+mongoose.connect("mongodb://localhost:27017/Agile11", {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -36,7 +37,6 @@ app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
-app.use(flash());
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Mongoose connection denied"));
@@ -44,12 +44,22 @@ db.once("open", () => {
     console.log("Mongoose connection established!!");
 })
 
-//Passport Configuration
-app.use(require("express-session")({
+const sessionConfigs = {
+    name: 'session',
     secret: "my name is ganesh",
     resave: false,
-    saveUninitialized: false
-}));
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 3,
+        maxAge: 1000 * 60 * 60 * 24 * 3
+    }
+}
+
+app.use(session(sessionConfigs));
+app.use(flash());
+
+//Passport Configuration
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new localStrategy(User.authenticate()));

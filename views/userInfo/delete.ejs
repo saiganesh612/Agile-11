@@ -1,4 +1,3 @@
-
 <div class="delete-form my-5">
     <h3><i class="icofont-danger-zone"></i> Danger zone</h3>
     <hr>
@@ -9,4 +8,46 @@
     <form action="/destroy?_method=DELETE" method="POST">
         <button class="btn btn-outline-danger btn-lg">Delete</button>
     </form>
+
+
+    <!-- <button type="button" class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#confirmDelete">
+        Delete
+    </button> -->
+
+    <!-- Modal -->
+    <!-- <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you absolutely sure?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/destroy?_method=DELETE" method="POST" class="validate-form" novalidate>
+                    <div class="modal-body">
+                        <p>
+                            This action cannot be undone.<br>
+                            Please enter your password to confirm.
+                        </p>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="password" type="password" placeholder="Enter password" name="confirmPassword" required>
+                            <label for="password">Confirm Password</label>
+                            <div class="valid-feedback">
+                                Looks good!!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please confirm yourself!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-danger">Delete my account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> -->
+
+
+
 </div>
