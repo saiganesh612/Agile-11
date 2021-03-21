@@ -1,11 +1,36 @@
 const express = require("express");
 const router = express.Router();
-const passport = require("passport");
 const User = require("../models/user");
+const Room = require("../models/room");
 const { isLoggedIn } = require("../middleware/index");
 
 router.get("/dashboard", isLoggedIn, (req, res) => {
     res.render("userInfo/dashboard", { style: 'dashboard' });
+})
+
+router.post("/createroom", isLoggedIn, async (req, res) => {
+    try {
+        const { roomname } = req.body;
+        const { _id, username } = req.user;
+        let admin = { id: _id, username }
+        const user = await User.findOne({ username: { $eq: username } })
+        if (!user) {
+            console.log("U don't have permission to create room!!");
+        } else {
+            const newRoom = new Room({ roomName: roomname, admin });
+            await newRoom.save();
+            user.rooms.push(newRoom);
+            await user.save();
+            console.log("Room created successfully");
+            res.redirect("/dashboard");
+        }
+    } catch (e) {
+        console.log(e.message);
+    }
+})
+
+router.post("/enterroom", (req, res) => {
+    console.log(req.body.roomname);
 })
 
 router.get("/settings", isLoggedIn, (req, res) => {

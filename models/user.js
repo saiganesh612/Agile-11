@@ -8,7 +8,13 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
     resetPasswordToken: String,
-    resetPasswordExpires: Date
+    resetPasswordExpires: Date,
+    rooms: [
+        {
+            type: mongoose.Schema.Types.ObjectID,
+            ref: "Room"
+        }
+    ],
 })
 
 userSchema.plugin(passportLocalMongoose);

@@ -26,9 +26,87 @@
         <!-- Sidebar end -->
 
         <!-- Content start -->
-        <div class="col-md-9"></div>
+        <div class="col-md-9">
+            <div class="container my-3">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
+                            data-bs-target="#createroom">
+                            Create new room
+                        </button>
+                        <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
+                            data-bs-target="#enterroom">
+                            Enter room
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create room Modal -->
+            <div class="modal fade" id="createroom" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Enter name to create room.</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="/createroom" method="POST" class="validate-form" novalidate>
+                            <div class="modal-body">
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="room" type="text" placeholder="Enter room name"
+                                        name="roomname" required>
+                                    <label for="room">Enter room name</label>
+                                    <div class="valid-feedback">
+                                        Looks good!!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please enter name for the room!
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button class="btn btn-primary">Create room</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enter room Modal -->
+            <div class="modal fade" id="enterroom" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Enter room name</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="/enterroom" method="POST" class="validate-form" novalidate>
+                            <div class="modal-body">
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="room" type="text" placeholder="Enter room name"
+                                        name="roomname" required>
+                                    <label for="room">Enter room name</label>
+                                    <div class="valid-feedback">
+                                        Looks good!!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please enter room name!
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button class="btn btn-primary">Enter room</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Content end -->
 
     </div>
 
-<%- include("../partials/footer") %>
+    <%- include("../partials/footer") %>
