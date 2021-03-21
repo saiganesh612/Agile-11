@@ -74,42 +74,46 @@ const getInningsdataAndCommitChanges = async (ids) => {
         for (let id of ids) {
             let { matchid, seriesid } = id;
             let data = await api.getScoreCard(matchid, seriesid);
-            let { name } = data.meta.series;
-            let sc = await Scorecard.findOne({ matchName: name })
-            if (!sc) {
-                // Create new scorecard
-                let newMatch = new Scorecard({ matchName: name });
-                // create innings instance
-                let { innings } = data.fullScorecard;
-                let i = innings.map(inning => {
-                    let inn = generateInningsDocument(inning);
-                    let newInning = new Innings(inn);
-                    return newInning.save();
-                })
-                let inning = await Promise.all(i);
-                // add innings to scorecard and commit the scorecard to make changes
-                newMatch.innings.push(...inning);
-                await newMatch.save();
-                console.log("scorecard created successfully");
-
-            } else {
-                let { innings } = data.fullScorecard;
-                let newInnings = [];
-                // checks whether current innings present in database
-                if (sc.innings.length < innings.length) {
-                    let len = innings.length - sc.innings.length;
-                    for (let i = 0; i < len; i++) {
-                        let inn = generateInningsDocument(innings[i]);
+            if (data.status !== 'no results') {
+                let { name } = data.meta.series;
+                let sc = await Scorecard.findOne({ matchName: name })
+                if (!sc) {
+                    // Create new scorecard
+                    let newMatch = new Scorecard({ matchName: name });
+                    // create innings instance
+                    let { innings } = data.fullScorecard;
+                    let i = innings.map(inning => {
+                        let inn = generateInningsDocument(inning);
                         let newInning = new Innings(inn);
-                        newInnings.push(newInning.save());
-                    }
-                    let i = await Promise.all(newInnings);
-                    sc.innings.push(...i);
-                    await sc.save();
-                    console.log("New innings added successfully");
+                        return newInning.save();
+                    })
+                    let inning = await Promise.all(i);
+                    // add innings to scorecard and commit the scorecard to make changes
+                    newMatch.innings.push(...inning);
+                    await newMatch.save();
+                    console.log("scorecard created successfully");
+
                 } else {
-                    console.log("Their is no new inning to add");
+                    let { innings } = data.fullScorecard;
+                    let newInnings = [];
+                    // checks whether current innings present in database
+                    if (sc.innings.length < innings.length) {
+                        let len = innings.length - sc.innings.length;
+                        for (let i = 0; i < len; i++) {
+                            let inn = generateInningsDocument(innings[i]);
+                            let newInning = new Innings(inn);
+                            newInnings.push(newInning.save());
+                        }
+                        let i = await Promise.all(newInnings);
+                        sc.innings.push(...i);
+                        await sc.save();
+                        console.log("New innings added successfully");
+                    } else {
+                        console.log("Their is no new inning to add");
+                    }
                 }
+            } else {
+                console.log("Their is no incoming data.");
             }
         }
 
