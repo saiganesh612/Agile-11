@@ -4,6 +4,10 @@ if (process.env.NODE_ENV !== "production") {
 
 const express = require("express");
 const app = express();
+const http = require("http");
+const server = http.createServer(app)
+const scoketio = require("socket.io");
+const io = scoketio(server);
 const path = require("path");
 const mongoose = require("mongoose");
 const passport = require("passport");
@@ -21,8 +25,8 @@ const scoreRoutes = require("./routes/livescores");
 const infoRoutes = require("./routes/userInfo");
 
 //Connecting to database
-const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/Agile11";
-mongoose.connect(dbUrl, {
+// const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/Agile11";
+mongoose.connect("mongodb://localhost:27017/Agile11", {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -32,6 +36,7 @@ mongoose.connect(dbUrl, {
 //configuring the various file paths
 app.set('views', path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.set("scoketio", io);
 app.use(express.static(__dirname + "/public"));
 
 app.use(express.urlencoded({ extended: true }));
@@ -87,7 +92,9 @@ app.get("/error", (req, res) => {
     res.send("Something went wrong!!");
 })
 
+global.socketIO = io;
+
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Server started on port ${port}`);
 })

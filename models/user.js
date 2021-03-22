@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectID,
             ref: "Room"
         }
-    ],
+    ]
 })
 
 userSchema.plugin(passportLocalMongoose);
