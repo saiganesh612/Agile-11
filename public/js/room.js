@@ -8,8 +8,8 @@ const [user, room] = [window.user, window.room];
 socket.emit("joinRoom", { user, room });
 
 // Get room and users
-socket.on("roomUsers", ({ room, users }) => {
-    outputRoomName(room);
+socket.on("roomUsers", ({ id, room, users }) => {
+    outputRoomName(id, room);
     outputUsers(users);
 })
 
@@ -29,8 +29,11 @@ function outputMessage(mssg) {
 }
 
 // Add room name to DOM
-function outputRoomName(room) {
-    roomName.innerText = room
+function outputRoomName(id, room) {
+    roomName.innerHTML = `
+        <h3> <span><em> Roomname: </em></span> ${room} </h3>
+        <p> <span><em> Roomid: </em></span> ${id} </p>
+    `;
 }
 
 // Add users to DOM

@@ -25,26 +25,30 @@ router.post("/createroom", isLoggedIn, async (req, res) => {
             await newRoom.save();
             user.rooms.push(newRoom);
             await user.save();
+            req.flash("success", "Share your room details with your friends and start playing.")
             res.redirect(`/room/${newRoom._id}`);
         }
     } catch (e) {
-        console.log(e.message);
+        req.flash("error", "Oh no! Something went wrong.");
+        res.redirect("/dashboard");
     }
 })
 
 // Search for the room and enters the room
-router.post("/enterroom", async (req, res) => {
+router.post("/enterroom", isLoggedIn, async (req, res) => {
     try {
-        const { roomname } = req.body;
-        const { username } = req.user;
+        const { roomname, roomid } = req.body;
+        const { username, _id } = req.user;
         const user = await User.findOne({ username: { $eq: username } });
         if (!user) {
             req.flash("error", "You don't have permission to play in rooms.");
             res.redirect("/dashboard");
         } else {
-            const room = await Room.findOne({ roomName: { $eq: roomname } });
+            const room = await Room.findOne({ _id: { $eq: roomid }, roomName: { $eq: roomname } });
             //Check whether room was created or not
-            if (room && room.admin.username !== username) {
+            if (room && room.admin.username !== username && room.players.length < 7) {
+                // Checks whether current user already exists in room or not
+
                 user.rooms.push(room);
                 room.players.push(user);
                 await user.save();
@@ -56,12 +60,13 @@ router.post("/enterroom", async (req, res) => {
             }
         }
     } catch (e) {
-        console.log(e.message);
+        req.flash("error", "Oh no! Something went wrong.");
+        res.redirect("/dashboard");
     }
 })
 
 // Core logic for creating the rooms and opens a socket
-router.get("/room/:roomid", (req, res) => {
+router.get("/room/:roomid", isLoggedIn, (req, res) => {
     const io = global.socketIO;
     io.once("connection", socket => {
         // Join in particular room
@@ -70,11 +75,10 @@ router.get("/room/:roomid", (req, res) => {
             // Retrive room and user details from database
             const userDetails = await User.findOne({ username: { $eq: user } })
             const roomDetails = await Room.findById(room);
-            const { roomName } = roomDetails;
-            const { _id } = userDetails;
-            userid = _id;
+            const { roomName, _id } = roomDetails;
+            userid = userDetails._id;
 
-            const puser = joinUser(_id, user, roomName);
+            const puser = joinUser(userid, user, roomName);
 
             socket.join(puser.room);
 
@@ -88,6 +92,7 @@ router.get("/room/:roomid", (req, res) => {
 
             // Send users and room info
             io.to(puser.room).emit("roomUsers", {
+                id: _id,
                 room: puser.room,
                 users: getRoomUsers(puser.room)
             })
@@ -103,6 +108,7 @@ router.get("/room/:roomid", (req, res) => {
 
                 // Send users and room info
                 io.to(user.room).emit("roomUsers", {
+                    id: user.id,
                     room: user.room,
                     users: getRoomUsers(user.room)
                 })
