@@ -4,6 +4,7 @@ const User = require("../models/user");
 const Room = require("../models/room");
 const { isLoggedIn } = require("../middleware/index");
 const formatMsg = require("../utils/message");
+const { joinUser, getCurrentUser, userLeft, getRoomUsers } = require("../utils/users");
 
 // Display's player stats
 router.get("/dashboard", isLoggedIn, (req, res) => {
@@ -63,19 +64,52 @@ router.post("/enterroom", async (req, res) => {
 router.get("/room/:roomid", (req, res) => {
     const io = global.socketIO;
     io.once("connection", socket => {
-        socket.on("joinRoom", () => {
+        // Join in particular room
+        let userid;
+        socket.on("joinRoom", async ({ user, room }) => {
+            // Retrive room and user details from database
+            const userDetails = await User.findOne({ username: { $eq: user } })
+            const roomDetails = await Room.findById(room);
+            const { roomName } = roomDetails;
+            const { _id } = userDetails;
+            userid = _id;
+
+            const puser = joinUser(_id, user, roomName);
+
+            socket.join(puser.room);
+
             // Welcome current user
-            socket.emit("message", formatMsg("Agile-11", "Welcome to game"));
+            socket.emit("message", formatMsg("Agile-11", `Welcome to ${puser.room} room`));
 
             //Broadcast when user joins
-            socket.broadcast.emit("message", formatMsg("User", "new player joined in the room"));
+            socket.broadcast
+                .to(puser.room)
+                .emit("message", formatMsg("Agile-11", `${puser.username} joined in the room`));
+
+            // Send users and room info
+            io.to(puser.room).emit("roomUsers", {
+                room: puser.room,
+                users: getRoomUsers(puser.room)
+            })
+
         })
         //Runs when clients disconnect
         socket.on("disconnect", () => {
-            io.emit("message", formatMsg("User", "player left the room"));
+            const user = userLeft(userid);
+
+            if (user) {
+                io.to(user.room)
+                    .emit("message", formatMsg("Agile-11", `${user.username} left the room`));
+
+                // Send users and room info
+                io.to(user.room).emit("roomUsers", {
+                    room: user.room,
+                    users: getRoomUsers(user.room)
+                })
+            }
         })
     });
-    res.render("rooms/room", { style: "settings" })
+    res.render("rooms/room", { style: "settings", id: req.params.roomid })
 })
 
 router.get("/settings", isLoggedIn, (req, res) => {

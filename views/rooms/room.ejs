@@ -1,8 +1,17 @@
 <%- include("../partials/header") %>
+<script>
+    window.room = '<%- id %>',
+    window.user = '<%- currentUser.username %>'
+</script>
 
 <div class="container">
     <div class="row">
         <div class="col-md-4">
+            <h2>Room name: </h2>
+            <h3 id="room-name"></h3>
+            <h4>Users </h4>
+            <ul id="users"></ul>
+            <br><br>
             <div class="response"></div>
         </div>
     </div>
