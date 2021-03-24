@@ -40,27 +40,30 @@ router.post("/enterroom", isLoggedIn, async (req, res) => {
         const { roomname, roomid } = req.body;
         const { username, _id } = req.user;
         const user = await User.findOne({ username: { $eq: username } });
-        if (!user) {
-            req.flash("error", "You don't have permission to play in rooms.");
-            res.redirect("/dashboard");
-        } else {
-            const room = await Room.findOne({ _id: { $eq: roomid }, roomName: { $eq: roomname } });
-            //Check whether room was created or not
-            if (room && room.admin.username !== username && room.players.length < 7) {
-                // Checks whether current user already exists in room or not
+        if (!user) throw "You don't have permission to play in rooms.";
+        const room = await Room.findOne({ _id: { $eq: roomid }, roomName: { $eq: roomname } });
 
-                user.rooms.push(room);
-                room.players.push(user);
-                await user.save();
-                await room.save();
-                res.redirect(`/room/${room._id}`);
-            } else {
-                req.flash("error", "Room was not found or probably you created this room.");
-                res.redirect("/dashboard");
-            }
-        }
+        //Check whether room was created or not
+        if (!room) throw "Room was not found!";
+
+        // Checks ownership of the room with current user
+        if (room.admin.username === username) throw "You created this room entering room will duplicates player in the room."
+
+        // Check whether the room is filled or not
+        if (room.players.length >= 7) throw "The room is filled!"
+
+        // Check whether current user was already in room or not
+        const dp = room.players.find(pid => pid.equals(_id));
+        if (dp) throw "You already there in this room"
+
+        // If there is no exception this code will be executed
+        user.rooms.push(room);
+        room.players.push(user);
+        await user.save();
+        await room.save();
+        res.redirect(`/room/${room._id}`);
     } catch (e) {
-        req.flash("error", "Oh no! Something went wrong.");
+        req.flash("error", e);
         res.redirect("/dashboard");
     }
 })
