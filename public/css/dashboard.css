@@ -67,6 +67,19 @@ hr{
   font-weight: 600;
 }
 
+/* ====================Main Content start========================= */
+
+.card {
+  border: 3px solid black;
+}
+
+.card :hover {
+  background-color: black;
+  color: whitesmoke;
+}
+
+/* ====================Main Content end========================= */
+
 @media (max-width: 767px) {
 
   .sidebar{

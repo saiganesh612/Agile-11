@@ -27,97 +27,76 @@
 
         <!-- Content start -->
         <div class="col-md-9">
-            <div class="container my-3">
-                <div class="row">
-                    <div class="col-md-8 offset-md-2">
-                        <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
-                            data-bs-target="#createroom">
-                            Create new room
-                        </button>
-                        <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
-                            data-bs-target="#enterroom">
-                            Enter room
-                        </button>
+            <div class="container" align="center">
+                <div class="row" style="margin-top: 50px;">
+                    <div class="col ">
+                        <button data-bs-toggle="modal" data-bs-target="#createroom" class=" btn btn-primary ">Create room</button>
+                    </div>
+                    <div class="col">
+                        <button data-bs-toggle="modal" data-bs-target="#enterroom" class="btn btn-primary ">Enter room</button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Create room Modal -->
-            <div class="modal fade" id="createroom" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Enter name to create room.</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="row" align="center">
+                    <div class="col-xl-6">
+                        <div class="card" style="margin:20px;" align="left">
+                            <div class="card-header bg-dark" style="color: whitesmoke;">
+                                <h2><b>ROOM NAME</b></h2>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">No. of members in a Room</h5>
+                                <p class="card-text">Room Name and add other content here</p>
+                                <a href="#" class="btn btn-info">Add link here</a>
+                            </div>
                         </div>
-                        <form action="/createroom" method="POST" class="validate-form" novalidate>
-                            <div class="modal-body">
-                                <div class="form-floating mb-3">
-                                    <input class="form-control" id="room" type="text" placeholder="Enter room name"
-                                        name="roomname" required>
-                                    <label for="room">Enter room name</label>
-                                    <div class="valid-feedback">
-                                        Looks good!!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Please enter name for the room!
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button class="btn btn-primary">Create room</button>
-                            </div>
-                        </form>
                     </div>
-                </div>
-            </div>
 
-            <!-- Enter room Modal -->
-            <div class="modal fade" id="enterroom" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Enter room name</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="col-xl-6">
+                        <div class="card" style="margin:20px;" align="left">
+                            <div class="card-header bg-dark" style="color: whitesmoke;">
+                                <h2><b>ROOM NAME</b></h2>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">No. of members in a Room</h5>
+                                <p class="card-text">Room Name and add other content here</p>
+                                <a href="#" class="btn btn-info">Add link here</a>
+                            </div>
                         </div>
-                        <form action="/enterroom" method="POST" class="validate-form" novalidate>
-                            <div class="modal-body">
-                                <div class="form-floating mb-3">
-                                    <input class="form-control" id="roomid" type="text" placeholder="Enter room id" 
-                                        name="roomid" required>
-                                    <label for="roomid">Enter room id</label>
-                                    <div class="valid-feedback">
-                                        Looks good!!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Please enter room id!
-                                    </div>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input class="form-control" id="room" type="text" placeholder="Enter room name"
-                                        name="roomname" required>
-                                    <label for="room">Enter room name</label>
-                                    <div class="valid-feedback">
-                                        Looks good!!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Please enter room name!
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button class="btn btn-primary">Enter room</button>
-                            </div>
-                        </form>
                     </div>
+            
+                    <div class="col-xl-6">
+                        <div class="card" style="margin:20px;" align="left">
+                            <div class="card-header bg-dark" style="color: whitesmoke;">
+                                <h2><b>ROOM NAME</b></h2>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">No. of members in a Room</h5>
+                                <p class="card-text">Room Name and add other content here</p>
+                                <a href="#" class="btn btn-info">Add link here</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6">
+                        <div class="card" style="margin:20px;" align="left">
+                            <div class="card-header bg-dark" style="color: whitesmoke;">
+                                <h2><b>ROOM NAME</b></h2>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">No. of members in a Room</h5>
+                                <p class="card-text">Room Name and add other content here</p>
+                                <a href="#" class="btn btn-info">Add link here</a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
+            
+            <!-- Room modals -->
+            <%- include("./modals/modal") %> 
         </div>
         <!-- Content end -->
-
     </div>
 
 <%- include("../partials/footer") %>
