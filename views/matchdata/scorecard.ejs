@@ -1,7 +1,7 @@
 <%- include("../partials/header") %> 
 
 <div class="container">
-    <% if(data && playersList && liveData){ %>
+    <% if(data.status === 200 && playersList.status === 200 && liveData.status === 200){ %>
         <h2> <%= data.meta.series.name %> </h2><br>
 
         <!-- List of players -->
@@ -14,7 +14,7 @@
         <%- include("./completedata") %> 
         
     <% } else { %>
-        <h1>Something went wrong!!</h1>
+        <h2>Currently the data is unavailable!!</h2>
     <% } %> 
 </div>
 
