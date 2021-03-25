@@ -74,8 +74,13 @@ hr{
 }
 
 .card :hover {
-  background-color: black;
-  color: whitesmoke;
+  transition: all 0.5s;
+  background-color: #1e1c1c;
+  color: lightgray;
+}
+
+.card a{
+  display: block;
 }
 
 /* ====================Main Content end========================= */

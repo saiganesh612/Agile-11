@@ -7,8 +7,10 @@ const formatMsg = require("../utils/message");
 const { joinUser, getCurrentUser, userLeft, getRoomUsers } = require("../utils/users");
 
 // Display's player stats
-router.get("/dashboard", isLoggedIn, (req, res) => {
-    res.render("userInfo/dashboard", { style: 'dashboard' });
+router.get("/dashboard", isLoggedIn, async (req, res) => {
+    const { _id, username } = req.user;
+    const listOfRooms = await Room.find({ $or: [{ players: { $in: [_id] } }, { "admin.username": { $eq: username } }] });
+    res.render("userInfo/dashboard", { style: 'dashboard', rooms: listOfRooms.reverse() });
 })
 
 // Creates a new room and save it to database
@@ -19,11 +21,12 @@ router.post("/createroom", isLoggedIn, async (req, res) => {
         let admin = { id: _id, username }
         const user = await User.findOne({ username: { $eq: username } })
         if (!user) {
-            console.log("U don't have permission to create room!!");
+            req.flash("error", "U don't have permission to create room!!");
+            res.redirect("/account/login");
         } else {
             const newRoom = new Room({ roomName: roomname, admin });
             await newRoom.save();
-            user.rooms.push(newRoom);
+            user.rooms.unshift(newRoom);
             await user.save();
             req.flash("success", "Share your room details with your friends and start playing.")
             res.redirect(`/room/${newRoom._id}`);
@@ -57,8 +60,8 @@ router.post("/enterroom", isLoggedIn, async (req, res) => {
         if (dp) throw "You already there in this room"
 
         // If there is no exception this code will be executed
-        user.rooms.push(room);
-        room.players.push(user);
+        user.rooms.unshift(room);
+        room.players.unshift(user);
         await user.save();
         await room.save();
         res.redirect(`/room/${room._id}`);

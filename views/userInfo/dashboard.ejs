@@ -1,102 +1,71 @@
 <%- include("../partials/header") %>
 
-    <div class="row">
-        <!-- Sidebar start -->
-        <div class="col-md-3 sidebar" id="sidebar">
-            <center>
-                <img src="Images/profile1.jpg" alt="">
-                <p>
-                    <%= currentUser.username %>
-                </p>
-            </center>
-            <hr>
-            <a href="/home">
-                <i class="bx bxs-home"></i> <span>Home</span>
-            </a>
-            <a href="/dashboard">
-                <i class="icofont-game-console"></i> <span>My Matches</span>
-            </a>
-            <a href="#">
-                <i class="icofont-chart-histogram"></i> <span>Metrices</span>
-            </a>
-            <a href="/settings">
-                <i class="icofont-ui-settings"></i> <span>Settings</span>
-            </a>
-        </div>
-        <!-- Sidebar end -->
+<div class="row">
+    <!-- Sidebar start -->
+    <div class="col-md-3 sidebar" id="sidebar">
+        <center>
+            <img src="Images/profile1.jpg" alt="">
+            <p>
+                <%= currentUser.username %>
+            </p>
+        </center>
+        <hr>
+        <a href="/home">
+            <i class="bx bxs-home"></i> <span>Home</span>
+        </a>
+        <a href="/dashboard">
+            <i class="icofont-game-console"></i> <span>My Matches</span>
+        </a>
+        <a href="#">
+            <i class="icofont-chart-histogram"></i> <span>Metrices</span>
+        </a>
+        <a href="/settings">
+            <i class="icofont-ui-settings"></i> <span>Settings</span>
+        </a>
+    </div>
+    <!-- Sidebar end -->
 
-        <!-- Content start -->
-        <div class="col-md-9">
-            <div class="container" align="center">
-                <div class="row" style="margin-top: 50px;">
-                    <div class="col ">
-                        <button data-bs-toggle="modal" data-bs-target="#createroom" class=" btn btn-primary ">Create room</button>
-                    </div>
-                    <div class="col">
-                        <button data-bs-toggle="modal" data-bs-target="#enterroom" class="btn btn-primary ">Enter room</button>
-                    </div>
+    <!-- Content start -->
+    <div class="col-md-9">
+        <div class="container" align="center">
+            <div class="row" style="margin-top: 50px;">
+                <div class="col ">
+                    <button data-bs-toggle="modal" data-bs-target="#createroom" 
+                        class=" btn btn-primary btn-lg ">Create room
+                    </button>
                 </div>
-
-                <div class="row" align="center">
-                    <div class="col-xl-6">
-                        <div class="card" style="margin:20px;" align="left">
-                            <div class="card-header bg-dark" style="color: whitesmoke;">
-                                <h2><b>ROOM NAME</b></h2>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">No. of members in a Room</h5>
-                                <p class="card-text">Room Name and add other content here</p>
-                                <a href="#" class="btn btn-info">Add link here</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-6">
-                        <div class="card" style="margin:20px;" align="left">
-                            <div class="card-header bg-dark" style="color: whitesmoke;">
-                                <h2><b>ROOM NAME</b></h2>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">No. of members in a Room</h5>
-                                <p class="card-text">Room Name and add other content here</p>
-                                <a href="#" class="btn btn-info">Add link here</a>
-                            </div>
-                        </div>
-                    </div>
-            
-                    <div class="col-xl-6">
-                        <div class="card" style="margin:20px;" align="left">
-                            <div class="card-header bg-dark" style="color: whitesmoke;">
-                                <h2><b>ROOM NAME</b></h2>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">No. of members in a Room</h5>
-                                <p class="card-text">Room Name and add other content here</p>
-                                <a href="#" class="btn btn-info">Add link here</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-6">
-                        <div class="card" style="margin:20px;" align="left">
-                            <div class="card-header bg-dark" style="color: whitesmoke;">
-                                <h2><b>ROOM NAME</b></h2>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">No. of members in a Room</h5>
-                                <p class="card-text">Room Name and add other content here</p>
-                                <a href="#" class="btn btn-info">Add link here</a>
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="col">
+                    <button data-bs-toggle="modal" data-bs-target="#enterroom" 
+                        class="btn btn-primary btn-lg ">Enter room
+                    </button>
                 </div>
             </div>
-            
-            <!-- Room modals -->
-            <%- include("./modals/modal") %> 
+
+            <div class="row" align="center">
+                <h1 class="mt-2" style="color: rgb(255, 253, 253);"> <em>List of your rooms</em></h1>
+                <% rooms.forEach(room => { %>
+                    <div class="col-xl-6">
+                        <div class="card" style="margin:20px;" align="left">
+                            <div class="card-header bg-dark" style="color: lightgray;">
+                                <h3><b><%= room.roomName %> </b></h3>
+                            </div>
+                            <div class="card-body">
+                                <% let creator = room.admin.username === currentUser.username ? 'You' : room.admin.username %> 
+                                <h6 class="card-title">Creator of room: <%= creator %> </h6>
+                                <small class="card-text">Number of players: <%= room.players.length %> </small><br>
+                                <small class="card-text"><em> Creation date: <%= room.timeStamp ? room.timeStamp : 'Not available' %> </em></small><br><br>
+                                <a href="/room/<%= room._id %>" class="btn btn-info">Enter room</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
         </div>
-        <!-- Content end -->
+        
+        <!-- Room modals -->
+        <%- include("./modals/modal") %> 
     </div>
+    <!-- Content end -->
+</div>
 
 <%- include("../partials/footer") %>
