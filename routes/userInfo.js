@@ -104,6 +104,13 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
             })
 
         })
+        // Listen for chat message
+        socket.on("chatMessage", mssg => {
+            let user = getCurrentUser(userid);
+
+            io.to(user.room).emit("message", formatMsg(user.username, mssg))
+        })
+
         //Runs when clients disconnect
         socket.on("disconnect", () => {
             const user = userLeft(userid);
@@ -121,7 +128,7 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
             }
         })
     });
-    res.render("rooms/room", { style: "settings", id: req.params.roomid })
+    res.render("rooms/room", { style: "room", id: req.params.roomid })
 })
 
 router.get("/settings", isLoggedIn, (req, res) => {
