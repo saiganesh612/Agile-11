@@ -5,8 +5,8 @@
     </script>
 
     <div class="row">
+        <!-- Chat-bot -->
         <div class="col-xl-3  order-xl-0">
-            <!-- Chat-bot -->
             <div class="card desktop m-2 text-center">
                 <div class="card-header bg-dark" style="color: whitesmoke;">
                     <h3><b>Welcome to T20:Room name</b></h3>
@@ -17,7 +17,7 @@
                     <h3>Team Mates</h3>
                     <ul id="users"></ul>
                     <hr>
-                    <div class="response"></div>
+                    <div class="response" style="overflow-y: auto; height: 300px;"></div>
                 </div>
                 <div class="card-footer">
                     <input id="msg" type="text" placeholder="Enter any text..." required>
@@ -26,67 +26,72 @@
         </div>
         <!-- Main content -->
         <div class="col-xl-9 order-sm-1 order-xl-1">
-            <div style="margin: auto; width: 250px; margin-top: 3vh;">
-                <select id="drop-down" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                    <option selected>Select your series</option>
-                    <option value="ipl">IPL</option>
-                    <option value="t20">T20</option>
-                    <option value="odi">ODI</option>
-                </select>
+            <div style="margin-left: auto; margin-right: auto; margin-top: 3vh; display: -webkit-box;">
+                <div class="row">
+                    <div class="col">
+                        <select id="drop-down" class="form-select form-select-lg mb-3"
+                            aria-label=".form-select-lg example">
+                            <option selected>Select your series</option>
+                            <option value="ipl">IPL</option>
+                            <option value="t20">T20</option>
+                            <option value="odi">ODI</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <button id="select-player" data-bs-toggle="modal" data-bs-target="#money"
+                            class="btn btn-info btn-lg" style="margin-left: 3em;">
+                            Select player
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="desktop players-list d-none m-2">
-                <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
-                            class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-                            aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                            aria-label="Slide 3"></button>
-                    </div>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img style="height: 70vh; width: 70vh;"
-                                src="https://www.sportzpower.com/sites/default/files/2020-08/IPL%202020%20banner%20-%20no%20vivo.jpg"
-                                class="d-block w-100" alt="...">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>First slide label</h5>
-                                <p>Some representative placeholder content for the first slide.</p>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <% for(let c in ipl){ %>
+                        <li class="nav-item" role="presentation" style="margin: 2px;">
+                            <button class="nav-link" id="<%= ipl[c][0].category %>-tab" data-bs-toggle="tab"
+                                data-bs-target="#<%= ipl[c][0].category %>" type="button" role="tab"
+                                aria-controls="<%= ipl[c][0].category %>" aria-selected="true">
+                                <%= ipl[c][0].category %>
+                            </button>
+                        </li>
+                        <% } %>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <% for(let c in ipl){ %>
+                        <div class="tab-pane fade" id="<%= ipl[c][0].category %>" role="tabpanel"
+                            aria-labelledby="<%= ipl[c][0].category %>-tab">
+                            <div class="container" style="margin-top: 30px; height: 475px; overflow-y: auto;">
+                                <table class="table table-dark table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">S/N</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Team</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% ipl[c].forEach((entry, index)=> { %>
+                                            <tr>
+                                                <th scope="row">
+                                                    <%= index + 1 %>
+                                                </th>
+                                                <td>
+                                                    <%= entry.name %>
+                                                </td>
+                                                <td>
+                                                    <%= entry.team %>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div class="carousel-item">
-                            <img style="height: 70vh; width: 70vh;"
-                                src="https://st4.depositphotos.com/1001941/24985/v/1600/depositphotos_249856402-stock-illustration-live-streaming-of-odi-cricket.jpg"
-                                class="d-block w-100" alt="...">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>Second slide label</h5>
-                                <p>Some representative placeholder content for the second slide.</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <img style="height: 70vh; width: 70vh;"
-                                src="https://thumbnails.yayimages.com/1600/c/b8e/cb8e0e6.jpg" class="d-block w-100"
-                                alt="...">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>Third slide label</h5>
-                                <p>Some representative placeholder content for the third slide.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
+                        <% } %>
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="row text-center">
@@ -95,7 +100,8 @@
 
             <div class="card team" style="width: 15rem;">
                 <div class="card-body">
-                    <h5 class="card-title">ganesh team</h5><hr>
+                    <h5 class="card-title">ganesh team</h5>
+                    <hr>
                     <p class="card-text">Dhoni</p>
                     <p class="card-text">Virat</p>
                 </div>
@@ -104,7 +110,10 @@
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/room.js"></script>
+    <%- include("../userInfo/modals/modal") %>
 
-<%- include("../partials/footer") %>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/seriesdata/ipl.js"></script>
+        <script src="/js/room.js"></script>
+
+        <%- include("../partials/footer") %>

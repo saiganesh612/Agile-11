@@ -4,7 +4,8 @@ const User = require("../models/user");
 const Room = require("../models/room");
 const { isLoggedIn } = require("../middleware/index");
 const formatMsg = require("../utils/message");
-const { joinUser, getCurrentUser, userLeft, getRoomUsers } = require("../utils/users");
+const { joinUser, getCurrentUser, userLeft, getRoomUsers, getDetails } = require("../utils/users");
+const ipl = require("../public/seriesdata/ipl");
 
 // Display's player stats
 router.get("/dashboard", isLoggedIn, async (req, res) => {
@@ -111,6 +112,40 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
             io.to(user.room).emit("message", formatMsg(user.username, mssg))
         })
 
+        // Listen for user amounts
+        socket.on("bet", m => {
+            let { betDetails, users } = getDetails(userid, m);
+            const room = users[0].room;
+
+            if (betDetails.length !== users.length) {
+
+                const remainingPlayers = users.filter(user => {
+                    return !betDetails.some(u => {
+                        return user.username === u.username.username
+                    })
+                })
+
+                io.to(room)
+                    .emit("message", formatMsg("Agile-11", `${remainingPlayers.length} players doesn't make any decision`))
+
+            } else {
+                // Get list of players with bet details
+                const compareCapital = betDetails.map(user => {
+                    return {
+                        "name": user.username.username,
+                        "money": user.money
+                    }
+                });
+                // Get the winner in the room
+                const winner = compareCapital.reduce(function (prev, current) {
+                    return (prev.money > current.money) ? prev : current
+                })
+                io.to(room)
+                    .emit("message", formatMsg("Agile-11", `${winner.name} has won and kept ${winner.money}rs/-`))
+            }
+
+        })
+
         //Runs when clients disconnect
         socket.on("disconnect", () => {
             const user = userLeft(userid);
@@ -128,7 +163,7 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
             }
         })
     });
-    res.render("rooms/room", { style: "room", id: req.params.roomid })
+    res.render("rooms/room", { style: "room", id: req.params.roomid, ipl: ipl() });
 })
 
 router.get("/settings", isLoggedIn, (req, res) => {

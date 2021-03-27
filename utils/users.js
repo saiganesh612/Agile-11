@@ -1,4 +1,5 @@
-const users = [];
+let users = [];
+const betDetails = [];
 
 // Join user to the room
 function joinUser(id, username, room) {
@@ -22,7 +23,20 @@ function userLeft(id) {
 
 // Get list of users in room
 function getRoomUsers(room) {
-    return users.filter(user => user.room === room)
+    users = users.filter(user => user.room === room);
+    return users;
 }
 
-module.exports = { joinUser, getCurrentUser, userLeft, getRoomUsers }
+// Combine respective bet details
+function getDetails(id, m) {
+    const user = users.find(user => user.id === id);
+
+    const state = { "username": user, "money": m };
+
+    betDetails.push(state);
+
+    return { betDetails, users };
+
+}
+
+module.exports = { joinUser, getCurrentUser, userLeft, getRoomUsers, getDetails }

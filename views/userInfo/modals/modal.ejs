@@ -51,9 +51,9 @@
                         </div>
                     </div>
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="room" type="text" placeholder="Enter room name" name="roomname"
+                        <input class="form-control" id="roomname" type="text" placeholder="Enter room name" name="roomname"
                             required>
-                        <label for="room">Enter room name</label>
+                        <label for="roomname">Enter room name</label>
                         <div class="valid-feedback">
                             Looks good!!
                         </div>
@@ -65,6 +65,37 @@
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button class="btn btn-primary">Enter room</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Money modal -->
+<div class="modal fade" id="money" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Enter money.</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form <%# action="/createroom" method="POST" %> id="money-value" class="validate-form" novalidate>
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="mv" type="number" placeholder="Enter amount" name="money"
+                           min="0" required>
+                        <label for="money">Enter the amount you want to spent</label>
+                        <div class="valid-feedback">
+                            Looks good!!
+                        </div>
+                        <div class="invalid-feedback">
+                            Enter valid number!
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary">Get the player</button>
                 </div>
             </form>
         </div>
