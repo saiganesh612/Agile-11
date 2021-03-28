@@ -51,8 +51,8 @@
                         </div>
                     </div>
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="roomname" type="text" placeholder="Enter room name" name="roomname"
-                            required>
+                        <input class="form-control" id="roomname" type="text" placeholder="Enter room name"
+                            name="roomname" required>
                         <label for="roomname">Enter room name</label>
                         <div class="valid-feedback">
                             Looks good!!
@@ -76,14 +76,25 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Enter money.</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Enter player name and spent money.</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form <%# action="/createroom" method="POST" %> id="money-value" class="validate-form" novalidate>
+            <form id="money-value" class="validate-form" novalidate>
                 <div class="modal-body">
                     <div class="form-floating mb-3">
+                        <input class="form-control" id="pname" type="text" placeholder="Enter player name" name="pname"
+                            required>
+                        <label for="pname">Enter player name</label>
+                        <div class="valid-feedback">
+                            Looks good!!
+                        </div>
+                        <div class="invalid-feedback">
+                            This field is required!!
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
                         <input class="form-control" id="mv" type="number" placeholder="Enter amount" name="money"
-                           min="0" required>
+                            min="0" required>
                         <label for="money">Enter the amount you want to spent</label>
                         <div class="valid-feedback">
                             Looks good!!
@@ -98,6 +109,24 @@
                     <button class="btn btn-primary">Get the player</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Balanced users list modal -->
+<div class="modal fade" id="bul" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">These players didn't make any decision.</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body" id='busl'></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary" data-bs-dismiss="modal">Ok!</button>
+            </div>
         </div>
     </div>
 </div>

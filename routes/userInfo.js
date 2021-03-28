@@ -5,7 +5,8 @@ const Room = require("../models/room");
 const { isLoggedIn } = require("../middleware/index");
 const formatMsg = require("../utils/message");
 const { joinUser, getCurrentUser, userLeft, getRoomUsers, getDetails } = require("../utils/users");
-const ipl = require("../public/seriesdata/ipl");
+const iplSeries = require("../public/seriesdata/ipl");
+const ipl = iplSeries();
 
 // Display's player stats
 router.get("/dashboard", isLoggedIn, async (req, res) => {
@@ -112,27 +113,41 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
             io.to(user.room).emit("message", formatMsg(user.username, mssg))
         })
 
-        // Listen for user amounts
-        socket.on("bet", m => {
-            let { betDetails, users } = getDetails(userid, m);
-            const room = users[0].room;
+        // Core logic for team selection
+        socket.on("bet", ({ money, name }) => {
+            let user = getCurrentUser(userid);
+            let check;
 
-            if (betDetails.length !== users.length) {
+            // Checks whether the given player name was there in the given list 
+            for (let p in ipl) {
+                check = ipl[p].filter(obj => obj.name === name)
+                if (check.length > 0) break;
+            }
+
+            if (check.length === 0) {
+                io.to(user.room)
+                    .emit("message", formatMsg("Agile-11", `${user.username} your selected player was not there in the list. We recommend you to check the player name in the list or copy and paste that player`))
+            }
+
+            // Get details from particular user 
+            let { betDetails, users } = getDetails(userid, money, name);
+            const details = betDetails[name]
+
+            // Checks whether any one left with the betting process
+            if (details.length !== users.length) {
 
                 const remainingPlayers = users.filter(user => {
-                    return !betDetails.some(u => {
-                        return user.username === u.username.username
+                    return !details.some(u => {
+                        return user.username === u.username
                     })
                 })
-
-                io.to(room)
-                    .emit("message", formatMsg("Agile-11", `${remainingPlayers.length} players doesn't make any decision`))
+                io.to(user.room).emit("bul", { users: remainingPlayers })
 
             } else {
                 // Get list of players with bet details
-                const compareCapital = betDetails.map(user => {
+                const compareCapital = details.map(user => {
                     return {
-                        "name": user.username.username,
+                        "name": user.username,
                         "money": user.money
                     }
                 });
@@ -140,10 +155,9 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
                 const winner = compareCapital.reduce(function (prev, current) {
                     return (prev.money > current.money) ? prev : current
                 })
-                io.to(room)
-                    .emit("message", formatMsg("Agile-11", `${winner.name} has won and kept ${winner.money}rs/-`))
+                io.to(user.room)
+                    .emit("message", formatMsg("Agile-11", `${winner.name} has won ${name} and kept ${winner.money}rs/-`))
             }
-
         })
 
         //Runs when clients disconnect
@@ -163,7 +177,7 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
             }
         })
     });
-    res.render("rooms/room", { style: "room", id: req.params.roomid, ipl: ipl() });
+    res.render("rooms/room", { style: "room", id: req.params.roomid, ipl });
 })
 
 router.get("/settings", isLoggedIn, (req, res) => {

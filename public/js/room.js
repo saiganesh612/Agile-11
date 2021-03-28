@@ -1,10 +1,13 @@
 const roomName = document.getElementById("room-name");
 const userList = document.getElementById("users");
 const dropDown = document.getElementById("drop-down");
+const selectPlayer = document.getElementById("select-player");
 const playersList = document.querySelector(".players-list");
 const input = document.getElementById("msg");
 const response = document.querySelector(".response");
-const money = document.getElementById("money-value")
+const money = document.getElementById("money-value");
+const bul = document.getElementById("bul");
+const busl = document.querySelector("#busl")
 
 const socket = io();
 
@@ -21,6 +24,14 @@ socket.on("roomUsers", ({ id, room, users }) => {
 // Message from server
 socket.on("message", mssg => {
     outputMessage(mssg);
+})
+
+// Show balanced users list to room mates
+socket.on("bul", ({ users }) => {
+    busl.innerHTML = `
+        ${users.map(user => `<h6>${user.username}</h6>`).join('')}
+    `
+    $("#bul").modal("show")
 })
 
 // Input message submit
@@ -56,27 +67,37 @@ function outputUsers(users) {
     `
 }
 
+// Add players to window object
 function addPlayers(data) {
     window.series = data;
+}
+
+// Show functionality
+function showMenu() {
+    selectPlayer.disabled = false;
+    selectPlayer.offsetParent.style.cursor = ""
+    playersList.classList.remove("d-none")
+    playersList.classList.add("d-block")
+}
+
+// Hide functionality
+function hideMenu() {
+    selectPlayer.disabled = true;
+    selectPlayer.offsetParent.style.cursor = "not-allowed"
+    playersList.classList.remove("d-block")
+    playersList.classList.add("d-none")
 }
 
 // Get the value of drop down
 dropDown.addEventListener("change", event => {
     let value = event.target.value;
-    if (value === "Select your series") {
-        playersList.classList.remove("d-block")
-        playersList.classList.add("d-none")
-    } else if (value === "ipl") {
-        addPlayers(ipl)
-        playersList.classList.remove("d-none")
-        playersList.classList.add("d-block")
-    } else if (value === "t20") {
-        playersList.classList.remove("d-none")
-        playersList.classList.add("d-block")
-    } else if (value === "odi") {
-        playersList.classList.remove("d-none")
-        playersList.classList.add("d-block")
+    if (value === "Select your series") hideMenu();
+    else if (value === "ipl") {
+        addPlayers(ipl);
+        showMenu();
     }
+    else if (value === "t20") showMenu();
+    else if (value === "odi") showMenu();
 })
 
 // selects player
@@ -84,12 +105,16 @@ money.addEventListener("submit", e => {
     e.preventDefault();
 
     let money = e.target.elements.mv.value;
-    if (money < 0) {
-        console.log("no -ve amounts");
-    } else {
-        socket.emit("bet", money)
+    let name = e.target.elements.pname.value;
+
+    // Checks whether all fields are filled with valid conditions
+    if (name && money && money > 0) {
+        socket.emit("bet", { money, name })
 
         $("#money").modal('hide');
+        e.target.elements.pname.value = "";
         e.target.elements.mv.value = 0;
+    } else {
+        console.log("Enter all fields with correct validations!!");
     }
 })

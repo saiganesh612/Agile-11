@@ -1,7 +1,7 @@
 <%- include("../partials/header") %>
     <script>
         window.room = '<%- id %>',
-            window.user = '<%- currentUser.username %>'
+        window.user = '<%- currentUser.username %>'
     </script>
 
     <div class="row">
@@ -37,9 +37,9 @@
                             <option value="odi">ODI</option>
                         </select>
                     </div>
-                    <div class="col">
+                    <div class="col" style="cursor: not-allowed;">
                         <button id="select-player" data-bs-toggle="modal" data-bs-target="#money"
-                            class="btn btn-info btn-lg" style="margin-left: 3em;">
+                            class="btn btn-info btn-lg" style="margin-left: 3em;" disabled>
                             Select player
                         </button>
                     </div>
@@ -55,7 +55,7 @@
                                 <%= ipl[c][0].category %>
                             </button>
                         </li>
-                        <% } %>
+                    <% } %>
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <% for(let c in ipl){ %>
@@ -83,12 +83,12 @@
                                                     <%= entry.team %>
                                                 </td>
                                             </tr>
-                                            <% }) %>
+                                        <% }) %>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <% } %>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -116,4 +116,4 @@
         <script src="/seriesdata/ipl.js"></script>
         <script src="/js/room.js"></script>
 
-        <%- include("../partials/footer") %>
+<%- include("../partials/footer") %>

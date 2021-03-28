@@ -1,5 +1,5 @@
 let users = [];
-const betDetails = [];
+const betDetails = {};
 
 // Join user to the room
 function joinUser(id, username, room) {
@@ -28,15 +28,19 @@ function getRoomUsers(room) {
 }
 
 // Combine respective bet details
-function getDetails(id, m) {
+function getDetails(id, m, name) {
     const user = users.find(user => user.id === id);
+    const key = Object.keys(betDetails).filter(key => key === name);
 
-    const state = { "username": user, "money": m };
-
-    betDetails.push(state);
-
+    if (key.length === 0) {
+        betDetails[name] = [];
+        const state = { "username": user.username, "money": m };
+        betDetails[name].push(state);
+    } else {
+        const state = { "username": user.username, "money": m };
+        betDetails[name].push(state);
+    }
     return { betDetails, users };
-
 }
 
 module.exports = { joinUser, getCurrentUser, userLeft, getRoomUsers, getDetails }
