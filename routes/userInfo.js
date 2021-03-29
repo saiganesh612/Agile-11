@@ -127,36 +127,43 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
             if (check.length === 0) {
                 io.to(user.room)
                     .emit("message", formatMsg("Agile-11", `${user.username} your selected player was not there in the list. We recommend you to check the player name in the list or copy and paste that player`))
-            }
-
-            // Get details from particular user 
-            let { betDetails, users } = getDetails(userid, money, name);
-            const details = betDetails[name]
-
-            // Checks whether any one left with the betting process
-            if (details.length !== users.length) {
-
-                const remainingPlayers = users.filter(user => {
-                    return !details.some(u => {
-                        return user.username === u.username
-                    })
-                })
-                io.to(user.room).emit("bul", { users: remainingPlayers })
-
             } else {
-                // Get list of players with bet details
-                const compareCapital = details.map(user => {
-                    return {
-                        "name": user.username,
-                        "money": user.money
+
+                // Get details of current user  
+                let info = getDetails(userid, money, name);
+
+                if (typeof info === 'string') {
+                    io.to(user.room).emit("message", formatMsg("Agile-11", info))
+                } else {
+
+                    const { betDetails, users } = info;
+                    const details = betDetails[name]
+                    // Checks whether any one left with the betting process
+                    if (details.length !== users.length) {
+
+                        const remainingPlayers = users.filter(user => {
+                            return !details.some(u => {
+                                return user.username === u.username
+                            })
+                        })
+                        io.to(user.room).emit("bul", { users: remainingPlayers })
+
+                    } else {
+                        // Get list of players with bet details
+                        const compareCapital = details.map(user => {
+                            return {
+                                "name": user.username,
+                                "money": user.money
+                            }
+                        });
+                        // Get the winner in the room
+                        const winner = compareCapital.reduce((prev, current) => {
+                            return (prev.money > current.money) ? prev : current
+                        })
+                        io.to(user.room)
+                            .emit("message", formatMsg("Agile-11", `${winner.name} has won ${name} and kept ${winner.money}rs/-`))
                     }
-                });
-                // Get the winner in the room
-                const winner = compareCapital.reduce(function (prev, current) {
-                    return (prev.money > current.money) ? prev : current
-                })
-                io.to(user.room)
-                    .emit("message", formatMsg("Agile-11", `${winner.name} has won ${name} and kept ${winner.money}rs/-`))
+                }
             }
         })
 

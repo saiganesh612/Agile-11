@@ -36,11 +36,17 @@ function getDetails(id, m, name) {
         betDetails[name] = [];
         const state = { "username": user.username, "money": m };
         betDetails[name].push(state);
-    } else {
-        const state = { "username": user.username, "money": m };
-        betDetails[name].push(state);
+        return { betDetails, users };
     }
-    return { betDetails, users };
+
+    if (betDetails[name].length === users.length) return "This player is already selected better choose another player";
+
+    const check = betDetails[name].filter(u => u.username === user.username);
+    if (check.length > 0) return `You already selected this player with an amount of ${check[0].money}`;
+
+    const state = { "username": user.username, "money": m };
+    betDetails[name].push(state);
+    return { betDetails, users }
 }
 
 module.exports = { joinUser, getCurrentUser, userLeft, getRoomUsers, getDetails }
