@@ -25,8 +25,8 @@ const scoreRoutes = require("./routes/livescores");
 const infoRoutes = require("./routes/userInfo");
 
 //Connecting to database
-// const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/Agile11";
-mongoose.connect("mongodb://localhost:27017/Agile11", {
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/Agile11";
+mongoose.connect(dbUrl, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -49,9 +49,11 @@ db.once("open", () => {
     console.log("Mongoose connection established!!");
 })
 
+const secret = process.env.SECRET || "This contains secret value";
+
 const sessionConfigs = {
     name: 'session',
-    secret: "my name is ganesh",
+    secret,
     resave: false,
     saveUninitialized: false,
     cookie: {
