@@ -19,7 +19,14 @@ const roomSchema = new mongoose.Schema({
     timeStamp: {
         type: String,
         default: () => moment().format('MMMM Do YYYY, h:mm a')
-    }
+    },
+    teams: [
+        {
+            _id: false,
+            name: String,
+            players: [String]
+        }
+    ]
 })
 
 module.exports = mongoose.model("Room", roomSchema);

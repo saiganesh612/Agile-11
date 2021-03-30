@@ -78,13 +78,14 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
     const io = global.socketIO;
     io.once("connection", socket => {
         // Join in particular room
-        let userid;
+        let userid, rd;
         socket.on("joinRoom", async ({ user, room }) => {
             // Retrive room and user details from database
             const userDetails = await User.findOne({ username: { $eq: user } })
             const roomDetails = await Room.findById(room);
             const { roomName, _id } = roomDetails;
             userid = userDetails._id;
+            rd = roomDetails;
 
             const puser = joinUser(userid, user, roomName);
 
@@ -114,7 +115,7 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
         })
 
         // Core logic for team selection
-        socket.on("bet", ({ money, name }) => {
+        socket.on("bet", async ({ money, name }) => {
             let user = getCurrentUser(userid);
             let check;
 
@@ -133,7 +134,7 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
                 let info = getDetails(userid, money, name);
 
                 if (typeof info === 'string') {
-                    io.to(user.room).emit("message", formatMsg("Agile-11", info))
+                    socket.emit("message", formatMsg("Agile-11", info))
                 } else {
 
                     const { betDetails, users } = info;
@@ -146,7 +147,7 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
                                 return user.username === u.username
                             })
                         })
-                        io.to(user.room).emit("bul", { users: remainingPlayers })
+                        socket.emit("bul", { users: remainingPlayers })
 
                     } else {
                         // Get list of players with bet details
@@ -160,6 +161,18 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
                         const winner = compareCapital.reduce((prev, current) => {
                             return (prev.money > current.money) ? prev : current
                         })
+                        // Save these winner data in database and assign player to the winner
+                        const index = rd.teams.findIndex(p => p.name === winner.name);
+
+                        if (index === -1) {
+                            const win = { name: winner.name, players: [name] };
+                            rd.teams.push(win);
+                            await rd.save();
+                        } else {
+                            rd.teams[index].players.push(name);
+                            await rd.save();
+                        }
+
                         io.to(user.room)
                             .emit("message", formatMsg("Agile-11", `${winner.name} has won ${name} and kept ${winner.money}rs/-`))
                     }
