@@ -96,8 +96,8 @@ dropDown.addEventListener("change", event => {
         addPlayers(ipl);
         showMenu();
     }
-    else if (value === "t20") showMenu();
-    else if (value === "odi") showMenu();
+    else if (value === "t20") hideMenu();
+    else if (value === "odi") hideMenu();
 })
 
 // selects player
