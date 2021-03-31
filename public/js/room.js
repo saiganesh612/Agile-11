@@ -7,7 +7,8 @@ const input = document.getElementById("msg");
 const response = document.querySelector(".response");
 const money = document.getElementById("money-value");
 const bul = document.getElementById("bul");
-const busl = document.querySelector("#busl")
+const busl = document.querySelector("#busl");
+const teamsList = document.getElementById("teams-list");
 
 const socket = io();
 
@@ -32,6 +33,31 @@ socket.on("bul", ({ users }) => {
         ${users.map(user => `<h6>${user.username}</h6>`).join('')}
     `
     $("#bul").modal("show")
+})
+
+// Display current teams 
+socket.on("lop", ({ currentTeamData }) => {
+
+    if(currentTeamData.length === 0){
+        teamsList.previousElementSibling.textContent = '';
+    } else {
+
+        teamsList.innerHTML = `
+        ${currentTeamData.map(team => {
+            return (
+                `
+                <div class="card team" style="width: 15rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">${team.name} team</h5>
+                        <hr>
+                        ${team.players.map(p => `<p class="card-text">${p}</p>`).join('')}
+                    </div>
+                </div>
+            `
+            )
+        }).join('')}`
+
+    }
 })
 
 // Input message submit

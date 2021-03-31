@@ -95,25 +95,14 @@
     </div>
 
     <div class="row text-center">
-        <div class="col-xl-12">
-            <h2 style="color: lightgray;"> <em>List of teams in this room</em> </h2>
-
-            <div class="card team" style="width: 15rem;">
-                <div class="card-body">
-                    <h5 class="card-title">ganesh team</h5>
-                    <hr>
-                    <p class="card-text">Dhoni</p>
-                    <p class="card-text">Virat</p>
-                </div>
-            </div>
-
-        </div>
+        <h2 style="color: lightgray;"> <em>List of teams in this room</em> </h2>
+        <div class="col-xl-12" id="teams-list"></div>
     </div>
 
     <%- include("../userInfo/modals/modal") %>
 
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="/seriesdata/ipl.js"></script>
-        <script src="/js/room.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/seriesdata/ipl.js"></script>
+    <script src="/js/room.js"></script>
 
 <%- include("../partials/footer") %>
