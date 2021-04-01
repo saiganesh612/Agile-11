@@ -134,18 +134,17 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
             } else {
 
                 // Get details of current user  
-                let info = getDetails(userid, money, name);
+                let info = getDetails(userid, money, name, rd);
 
                 if (typeof info === 'string') {
                     socket.emit("message", formatMsg("Agile-11", info))
                 } else {
 
-                    const { betDetails, users } = info;
-                    const details = betDetails[name]
+                    const { details, lou } = info;
                     // Checks whether any one left with the betting process
-                    if (details.length !== users.length) {
+                    if (details.length !== lou.length) {
 
-                        const remainingPlayers = users.filter(user => {
+                        const remainingPlayers = lou.filter(user => {
                             return !details.some(u => {
                                 return user.username === u.username
                             })
