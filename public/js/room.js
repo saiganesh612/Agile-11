@@ -38,7 +38,7 @@ socket.on("bul", ({ users }) => {
 // Display current teams 
 socket.on("lop", ({ currentTeamData }) => {
 
-    if(currentTeamData.length === 0){
+    if (currentTeamData.length === 0) {
         teamsList.previousElementSibling.textContent = '';
     } else {
 
@@ -134,7 +134,7 @@ money.addEventListener("submit", e => {
     let name = e.target.elements.pname.value;
 
     // Checks whether all fields are filled with valid conditions
-    if (name && money && money > 0) {
+    if (name && money && money >= 0 && money <= 100) {
         socket.emit("bet", { money, name })
 
         $("#money").modal('hide');
