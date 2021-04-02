@@ -154,26 +154,31 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
                     } else {
                         // Get the winner in the room
                         const winner = details.reduce((prev, current) => {
-                            return (prev.money > current.money) ? prev : current
+                            return (prev.money === current.money) ? prev : (prev.money > current.money) ? prev : current
                         })
-                        // Save these winner data in database and assign player to the winner
-                        const index = rd.teams.findIndex(p => p.name === winner.username);
+                        if (winner.money !== 0) {
+                            // Save these winner data in database and assign player to the winner
+                            const index = rd.teams.findIndex(p => p.name === winner.username);
 
-                        if (index === -1) {
-                            const win = { name: winner.username, players: [name] };
-                            rd.teams.push(win);
-                            await rd.save();
+                            if (index === -1) {
+                                const win = { name: winner.username, players: [name] };
+                                rd.teams.push(win);
+                                await rd.save();
+                            } else {
+                                rd.teams[index].players.push(name);
+                                await rd.save();
+                            }
+
+                            // Updates the teams list for every user in the room
+                            io.to(user.room)
+                                .emit("lop", { currentTeamData: rd.teams })
+
+                            io.to(user.room)
+                                .emit("message", formatMsg("Agile-11", `${winner.username} has won ${name} and kept ${winner.money}rs/-`))
                         } else {
-                            rd.teams[index].players.push(name);
-                            await rd.save();
+                            io.to(user.room)
+                                .emit("message", formatMsg("Agile-11", `None of your team mates selected ${name} and kept unsold.`))
                         }
-
-                        // Updates the teams list for every user in the room
-                        io.to(user.room)
-                            .emit("lop", { currentTeamData: rd.teams })
-
-                        io.to(user.room)
-                            .emit("message", formatMsg("Agile-11", `${winner.username} has won ${name} and kept ${winner.money}rs/-`))
                     }
                 }
             }

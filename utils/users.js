@@ -11,7 +11,10 @@ function joinUser(id, username, room) {
         rusers[room] = [];
         rusers[room].push(user)
     } else {
-        rusers[room].push(user)
+
+        const verify = rusers[room].filter(u => u.username === username);
+        if (verify.length === 0) rusers[room].push(user);
+
     }
     users.push(user)
     return user;
@@ -58,7 +61,7 @@ function getDetails(id, m, name, room) {
     if (roomkey.length === 0) {
         betDetails[rname] = {};
         betDetails[rname][name] = [];
-        const state = { "username": user.username, "money": m };
+        const state = { "username": user.username, "money": parseFloat(m) };
         betDetails[rname][name].push(state);
         const details = betDetails[rname][name];
         const lou = rusers[rname];
@@ -69,7 +72,7 @@ function getDetails(id, m, name, room) {
     const pkey = Object.keys(betDetails[rname]).filter(p => p === name);
     if (pkey.length === 0) {
         betDetails[rname][name] = [];
-        const state = { "username": user.username, "money": m };
+        const state = { "username": user.username, "money": parseFloat(m) };
         betDetails[rname][name].push(state);
         const details = betDetails[rname][name];
         const lou = rusers[rname];
@@ -81,7 +84,7 @@ function getDetails(id, m, name, room) {
     if (check.length > 0) return `You already selected this player with an amount of ${check[0].money}`;
 
     // If everything works fine then this snippet will run
-    const state = { "username": user.username, "money": m };
+    const state = { "username": user.username, "money": parseFloat(m) };
     betDetails[rname][name].push(state);
     const details = betDetails[rname][name];
     const lou = rusers[rname];
