@@ -4,7 +4,7 @@ function formatMsg(username, text) {
     return {
         username,
         text,
-        time: moment().format("h:mm a")
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
 }
 
