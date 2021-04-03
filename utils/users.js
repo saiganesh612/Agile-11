@@ -39,6 +39,17 @@ function getRoomUsers(room) {
     return users;
 }
 
+function doManipulate(user, tlist, name, m, rname) {
+    const i = tlist.findIndex(p => p.name === user.username);
+    if (tlist[i].balanceAmount - parseFloat(m) < 0) return `You can't afford ${name} with ${parseFloat(m)}cr because you are keeping beyond ${tlist[i].balanceAmount}cr.`
+
+    const state = { "username": user.username, "money": parseFloat(m) };
+    betDetails[rname][name].push(state);
+    const details = betDetails[rname][name];
+    const lou = rusers[rname];
+    return { details, lou };
+}
+
 // Combine respective bet details
 function getDetails(id, m, name, room) {
     const user = users.find(user => user.id === id);
@@ -61,22 +72,20 @@ function getDetails(id, m, name, room) {
     if (roomkey.length === 0) {
         betDetails[rname] = {};
         betDetails[rname][name] = [];
-        const state = { "username": user.username, "money": parseFloat(m) };
-        betDetails[rname][name].push(state);
-        const details = betDetails[rname][name];
-        const lou = rusers[rname];
-        return { details, lou };
+
+        const info = doManipulate(user, tlist, name, m, rname);
+        console.log(info);
+        return info;
     }
 
     // If room exists then checks whether the player was detected or not
     const pkey = Object.keys(betDetails[rname]).filter(p => p === name);
     if (pkey.length === 0) {
         betDetails[rname][name] = [];
-        const state = { "username": user.username, "money": parseFloat(m) };
-        betDetails[rname][name].push(state);
-        const details = betDetails[rname][name];
-        const lou = rusers[rname];
-        return { details, lou };
+
+        const info = doManipulate(user, tlist, name, m, rname);
+        console.log(info);
+        return info;
     }
 
     // Checks whether the user was cheating on his/her team-mates
@@ -84,11 +93,9 @@ function getDetails(id, m, name, room) {
     if (check.length > 0) return `You already selected this player with an amount of ${check[0].money}`;
 
     // If everything works fine then this snippet will run
-    const state = { "username": user.username, "money": parseFloat(m) };
-    betDetails[rname][name].push(state);
-    const details = betDetails[rname][name];
-    const lou = rusers[rname];
-    return { details, lou };
+    const info = doManipulate(user, tlist, name, m, rname);
+    console.log(info);
+    return info;
 }
 
 module.exports = { joinUser, getCurrentUser, userLeft, getRoomUsers, getDetails }
