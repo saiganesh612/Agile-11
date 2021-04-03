@@ -20,13 +20,15 @@ router.post("/createroom", isLoggedIn, async (req, res) => {
     try {
         const { roomname } = req.body;
         const { _id, username } = req.user;
-        let admin = { id: _id, username }
+        let admin = { id: _id, username };
+        let ba = { balanceAmount: 100, name: username }
         const user = await User.findOne({ username: { $eq: username } })
         if (!user) {
             req.flash("error", "U don't have permission to create room!!");
             res.redirect("/account/login");
         } else {
             const newRoom = new Room({ roomName: roomname, admin });
+            newRoom.teams.push(ba)
             await newRoom.save();
             user.rooms.unshift(newRoom);
             await user.save();
@@ -62,8 +64,10 @@ router.post("/enterroom", isLoggedIn, async (req, res) => {
         if (dp) throw "You already there in this room"
 
         // If there is no exception this code will be executed
+        let ba = { balanceAmount: 100, name: username }
         user.rooms.unshift(room);
         room.players.unshift(user);
+        room.teams.push(ba);
         await user.save();
         await room.save();
         res.redirect(`/room/${room._id}`);
@@ -105,6 +109,10 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
                 room: puser.room,
                 users: getRoomUsers(puser.room)
             })
+
+            // Updates user balance amount
+            const index = rd.teams.findIndex(p => p.name === puser.username);
+            socket.emit("balance", { balance: rd.teams[index].balanceAmount });
 
             // Send the teams list to the user
             socket.emit("lop", { currentTeamData: rd.teams })
@@ -159,14 +167,19 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
                         if (winner.money !== 0) {
                             // Save these winner data in database and assign player to the winner
                             const index = rd.teams.findIndex(p => p.name === winner.username);
+                            let cb = rd.teams[index].balanceAmount;
 
-                            if (index === -1) {
-                                const win = { name: winner.username, players: [name] };
-                                rd.teams.push(win);
-                                await rd.save();
+                            // Round the balance to 1 decimal value
+                            rd.teams[index].balanceAmount = Math.round((cb - winner.money) * 10) / 10;
+                            rd.teams[index].players.push(name);
+                            await rd.save();
+
+                            // Updates user balance amount
+                            if (user.username === winner.username) {
+                                socket.emit("balance", { balance: rd.teams[index].balanceAmount });
                             } else {
-                                rd.teams[index].players.push(name);
-                                await rd.save();
+                                const index = rd.teams.findIndex(p => p.name === user.username);
+                                socket.emit("balance", { balance: rd.teams[index].balanceAmount });
                             }
 
                             // Updates the teams list for every user in the room
@@ -174,7 +187,7 @@ router.get("/room/:roomid", isLoggedIn, (req, res) => {
                                 .emit("lop", { currentTeamData: rd.teams })
 
                             io.to(user.room)
-                                .emit("message", formatMsg("Agile-11", `${winner.username} has won ${name} and kept ${winner.money}rs/-`))
+                                .emit("message", formatMsg("Agile-11", `${winner.username} has won ${name} and kept ${winner.money}Cr/-`))
                         } else {
                             io.to(user.room)
                                 .emit("message", formatMsg("Agile-11", `None of your team mates selected ${name} and kept unsold.`))

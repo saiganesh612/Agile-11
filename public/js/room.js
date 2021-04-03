@@ -9,6 +9,7 @@ const money = document.getElementById("money-value");
 const bul = document.getElementById("bul");
 const busl = document.querySelector("#busl");
 const teamsList = document.getElementById("teams-list");
+const balanceAmount = document.getElementById("balance");
 
 const socket = io();
 
@@ -33,6 +34,13 @@ socket.on("bul", ({ users }) => {
         ${users.map(user => `<h6>${user.username}</h6>`).join('')}
     `
     $("#bul").modal("show")
+})
+
+// Shows remaining amount of the user
+socket.on("balance", ({ balance }) => {
+    balanceAmount.innerHTML = `
+        <h2>Balance: ${balance}Cr</h2>
+    `
 })
 
 // Display current teams 
@@ -72,8 +80,16 @@ input.addEventListener("change", e => {
 function outputMessage(mssg) {
     const div = document.createElement('div');
     div.innerHTML = `
-        <small class="mb-0"> ${mssg.username} <span><em>${mssg.time}</em></span> </small><br>
-        <small>${mssg.text}</small><hr>
+        <div class="chatContainer row">
+            <div class="avatar-circle col-2">
+                <span class="initials"> ${mssg.username[0]} </span>
+            </div>
+            <div class="col">
+                <span class="time-left"><b style="color: black;">${mssg.username}</b></span>
+                <span class="time-right">${mssg.time}</span><br>
+                <p style="font-weight: 450; text-transform: none;" align=left><em> ${mssg.text} </em></p>
+            <div>
+        </div>       
     `;
     response.appendChild(div);
 }
@@ -89,7 +105,14 @@ function outputRoomName(id, room) {
 // Add users to DOM
 function outputUsers(users) {
     userList.innerHTML = `
-        ${users.map(user => `<li>${user.username}</li>`).join('')}
+        ${users.map(user => `
+            <div class="row" style="margin: 5px;"> 
+                <div class="avatar-circle col-2">
+                    <span class="initials"> ${user.username[0]} </span>
+                </div> 
+                <div class="col"> ${user.username} </div>
+            </div>`
+    ).join('')}
     `
 }
 
