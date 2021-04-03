@@ -5,6 +5,86 @@ body{
     position: relative;
 } 
 
+
+/* ====================== Chat bot start ===================== */
+
+.avatar-circle {
+  width: 50px;
+  height: 50px;
+  background-color: skyblue;
+  text-align: center;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+}
+
+.initials {
+  position: relative;
+  top: 10px; 
+  font-size: 20px; 
+  color: #000;
+  font-family: "Courier New", monospace;
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+
+.avatar-circle+div{
+    top: 10px;
+    font-weight: bold;
+    text-transform: capitalize;
+    font-size: 18px;
+}
+
+.bottomright {
+  position: absolute;
+  bottom: 8px;
+  right: 36px;
+  font-size: 18px;
+}
+
+.chatContainer {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.darker {
+  border-color: #ccc;
+  background-color: #ddd;
+}
+
+.chatContainer::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.chatContainer img {
+  float: left;
+  max-width: 60px;
+  width: 100%;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+
+.chatContainer img.right {
+  float: right;
+  margin-left: 20px;
+  margin-right:0;
+}
+
+.time-right {
+  float: right;
+  color: #aaa;
+}
+
+.time-left {
+  float: left;
+  color: #999;
+}
+
 /* ================ Team cards start ==================== */
 
 #msg{

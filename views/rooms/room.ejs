@@ -8,16 +8,22 @@
         <!-- Chat-bot -->
         <div class="col-xl-3  order-xl-0">
             <div class="card desktop m-2 text-center">
-                <div class="card-header bg-dark" style="color: whitesmoke;">
-                    <h3><b>Welcome to T20:Room name</b></h3>
-                </div>
+                <div class="card-header bg-dark" id="room-name" style="color: whitesmoke;"></div>
                 <div class="card-body">
-                    <div id="room-name"></div>
+                    <h4>
+                        <a style="text-decoration: none; color: black;" data-toggle="collapse" href="#collapseExample"
+                            role="button" aria-expanded="false" aria-controls="collapseExample">
+                            Team members<i class="icofont-simple-down"></i>
+                        </a>
+                    </h4>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            <div id="users" align="left" style="font-size: 15px; margin-left: 2em;"></div>
+                        </div>
+                    </div>
+
                     <hr>
-                    <h3>Team Mates</h3>
-                    <ul id="users"></ul>
-                    <hr>
-                    <div class="response" style="overflow-y: auto; height: 300px;"></div>
+                    <div class="response" style="overflow-y: auto; height: 450px;"></div>
                 </div>
                 <div class="card-footer">
                     <input id="msg" type="text" placeholder="Enter any text..." required>
@@ -27,8 +33,8 @@
         <!-- Main content -->
         <div class="col-xl-9 order-sm-1 order-xl-1">
             <div style="margin-left: auto; margin-right: auto; margin-top: 3vh; display: -webkit-box;">
-                <div class="row">
-                    <div class="col">
+                <div class="row" style="width: 100%;">
+                    <div class="col-3">
                         <select id="drop-down" class="form-select form-select-lg mb-3"
                             aria-label=".form-select-lg example">
                             <option selected>Select your series</option>
@@ -37,12 +43,13 @@
                             <option value="odi">ODI</option>
                         </select>
                     </div>
-                    <div class="col" style="cursor: not-allowed;">
+                    <div class="col-4" style="cursor: not-allowed;">
                         <button id="select-player" data-bs-toggle="modal" data-bs-target="#money"
                             class="btn btn-info btn-lg" style="margin-left: 3em;" disabled>
                             Select player
                         </button>
                     </div>
+                    <div id="balance" class="col-4" align="right" style="color: lightgray; text-align: left;"></div>
                 </div>
             </div>
             <div class="desktop players-list d-none m-2">
