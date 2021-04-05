@@ -23,7 +23,10 @@ const roomSchema = new mongoose.Schema({
     teams: [
         {
             _id: false,
-            balanceAmount: Number,
+            balanceAmount: {
+                type: Number,
+                min: 0
+            },
             name: String,
             players: [String]
         }
