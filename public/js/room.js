@@ -85,8 +85,7 @@ function outputMessage(mssg) {
                 <span class="initials"> ${mssg.username[0]} </span>
             </div>
             <div class="col">
-                <span class="time-left"><b style="color: black;">${mssg.username}</b></span>
-                <span class="time-right">${mssg.time}</span><br>
+                <span class="time-left"><b style="color: black;">${mssg.username}</b></span><br>
                 <p style="font-weight: 450; text-transform: none;" align=left><em> ${mssg.text} </em></p>
             <div>
         </div>       
