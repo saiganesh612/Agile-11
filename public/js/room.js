@@ -10,6 +10,7 @@ const bul = document.getElementById("bul");
 const busl = document.querySelector("#busl");
 const teamsList = document.getElementById("teams-list");
 const balanceAmount = document.getElementById("balance");
+const startGame = document.getElementById("start-game");
 
 const socket = io();
 
@@ -41,6 +42,16 @@ socket.on("balance", ({ balance }) => {
     balanceAmount.innerHTML = `
         <h2>Balance: ${balance}Cr</h2>
     `
+})
+
+// Runs when game started
+startGame.addEventListener("click", () => {
+    socket.emit("gameStarted")
+    console.log("Signal send");
+    setInterval(() => {
+        socket.emit("gameStarted")
+        console.log("Signal send");
+    }, 10000);
 })
 
 // Display current teams 

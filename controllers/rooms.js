@@ -3,6 +3,7 @@ const Room = require("../models/room");
 const formatMsg = require("../utils/message");
 const { joinUser, getCurrentUser, userLeft, getRoomUsers, getDetails } = require("../utils/users");
 const iplSeries = require("../public/seriesdata/ipl");
+const cric = require("../apis/cric");
 const ipl = iplSeries();
 
 module.exports.startPlaying = (req, res) => {
@@ -122,6 +123,18 @@ module.exports.startPlaying = (req, res) => {
                     }
                 }
             }
+        })
+
+        // Logic to start game
+        socket.on("gameStarted", async () => {
+            const matches = await cric.newMatches();
+            const matchSummary = matches.map(async match => {
+                const summary = await cric.fantasySummary(match.unique_id);
+                return summary
+            })
+            const data = await Promise.all(matchSummary);
+            console.log("Signal received");
+            cric.computeData(data);
         })
 
         //Runs when clients disconnect
