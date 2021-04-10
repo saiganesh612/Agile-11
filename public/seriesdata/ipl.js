@@ -6,41 +6,49 @@ const ipl = () => {
             {
                 "name": "Ajinkya Rahane",
                 "team": "DC",
+                "Aname": "AM Rahane",
                 "category": "Batsmen-1"
             },
             {
                 "name": "Chris Gayle",
                 "team": "PBKS",
+                "Aname": "CH Gayle",
                 "category": "Batsmen-1"
             },
             {
                 "name": "Chris Lynn",
                 "team": "MI",
+                "Aname": "CA Lynn",
                 "category": "Batsmen-1"
             },
             {
                 "name": "David Warner",
                 "team": "SRH",
+                "Aname": "DA Warner",
                 "category": "Batsmen-1"
             },
             {
                 "name": "Eoin Morgan",
                 "team": "KKR",
+                "Aname": "EJG Morgan",
                 "category": "Batsmen-1"
             },
             {
                 "name": "Faf Du Plessis",
                 "team": "CSK",
+                "Aname": "F du Plessis",
                 "category": "Batsmen-1"
             },
             {
                 "name": "Glenn Maxwell",
                 "team": "RCB",
+                "Aname": "GJ Maxwell",
                 "category": "Batsmen-1"
             },
             {
                 "name": "Kane Williamson",
                 "team": "SRH",
+                "Aname": "KS Williamson",
                 "category": "Batsmen-1"
             },
             {
