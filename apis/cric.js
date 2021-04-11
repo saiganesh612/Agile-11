@@ -3,6 +3,7 @@ const iplTeams = [
     'Mumbai Indians', 'Royal Challengers Bangalore', 'Chennai Super Kings', 'Delhi Capitals', 'Sunrisers Hyderabad',
     'Kolkata Knight Riders', 'Rajasthan Royals', 'Punjab Kings'
 ]
+const { calculateFieldingPoints, calculateBowlingPoints, calculateBatingPoints } = require("../utils/points");
 const cric = {};
 
 cric.newMatches = async () => {
@@ -34,8 +35,63 @@ cric.fantasySummary = async id => {
     }
 }
 
+// Compute and return the points from fielding scores
+cric.computeFieldingPoints = match => {
+    const fstats = []
+    match.forEach(team => {
+        team.scores.forEach(player => {
+            const { name, runout, stumped, bowled, lbw } = player;
+            const c = player.catch;
+            const p = {};
+            const fpoints = calculateFieldingPoints(c, stumped, lbw, bowled, runout);
+            p[name] = fpoints;
+            fstats.push(p);
+        })
+    })
+    return fstats;
+}
+
+// Compute and return the points from bowling scores
+cric.computeBowlingPoints = match => {
+    const bstats = []
+    match.forEach(team => {
+        team.scores.forEach(player => {
+            const { NB, WD, Econ, W, M, bowler } = player;
+            const zeros = player['0s'];
+            const p = {};
+            const bpoints = calculateBowlingPoints(W, M, NB, WD, zeros, Econ)
+            p[bowler] = bpoints;
+            bstats.push(p);
+        })
+    })
+    return bstats;
+}
+
+// Compute and return the points from batting scores
+cric.computeBattingPoints = match => {
+    const bstats = []
+    match.forEach(team => {
+        team.scores.forEach(player => {
+            const { dismissal, SR, B, R, batsman } = player;
+            const fours = player['4s'];
+            const sixes = player['6s'];
+            const p = {};
+            const bpoints = calculateBatingPoints(R, fours, sixes, dismissal, SR, B);
+            p[batsman] = bpoints;
+            bstats.push(p);
+        })
+    })
+    return bstats;
+}
+
+// Main computation block that collects all points
 cric.computeData = data => {
-    console.log("This is from utils", data);
+    data.forEach(match => {
+        const fieldingPoints = cric.computeFieldingPoints(match.fielding);
+        const bowlingPoints = cric.computeBowlingPoints(match.bowling);
+        const battingPoints = cric.computeBattingPoints(match.batting);
+        return { fieldingPoints, bowlingPoints, battingPoints }
+    })
 }
 
 module.exports = cric;
