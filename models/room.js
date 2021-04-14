@@ -28,7 +28,20 @@ const roomSchema = new mongoose.Schema({
                 min: 0
             },
             name: String,
-            players: [String]
+            players: [
+                {
+                    _id: false,
+                    playerName: String,
+                    apiName: String
+                }
+            ],
+            points: [
+                {
+                    _id: false,
+                    matchId: Number,
+                    fantasyPoints: Number
+                }
+            ]
         }
     ]
 })
