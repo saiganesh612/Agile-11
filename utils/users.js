@@ -62,7 +62,7 @@ function getDetails(id, m, name, room) {
     // Checks whether the given player is already selected or not
     let t;
     tlist.forEach(team => {
-        const check = team.players.filter(p => p === name);
+        const check = team.players.filter(p => p.playerName === name);
         if (check.length !== 0) t = team;
     })
     if (t) return `${name} was already selected by ${t.name} better choose another player`;

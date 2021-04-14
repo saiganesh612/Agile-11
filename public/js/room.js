@@ -69,7 +69,7 @@ socket.on("lop", ({ currentTeamData }) => {
                     <div class="card-body">
                         <h5 class="card-title">${team.name} team</h5>
                         <hr>
-                        ${team.players.map(p => `<p class="card-text">${p}</p>`).join('')}
+                        ${team.players.map(p => `<p class="card-text">${p.playerName}</p>`).join('')}
                     </div>
                 </div>
             `

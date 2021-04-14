@@ -99,7 +99,7 @@ module.exports.startPlaying = (req, res) => {
 
                             // Round the balance to 1 decimal value
                             rd.teams[index].balanceAmount = Math.round((cb - winner.money) * 10) / 10;
-                            rd.teams[index].players.push(name);
+                            rd.teams[index].players.push({ playerName: name, apiName: check[0].Aname });
                             await rd.save();
 
                             // Updates user balance amount
