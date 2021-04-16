@@ -28,7 +28,7 @@ cric.newMatches = async () => {
 
 cric.fantasySummary = async id => {
     try {
-        const res = await axios.get(`https://cricapi.com/api/fantasySummary?apikey=${process.env.CRIC_API_KEY}&unique_id=${id}`)
+        const res = await axios.get(`https://cricapi.com/api/fantasySummary?apikey=${process.env.CRIC_API_KEY}&unique_id=1254064`)
         return res.data.data
     } catch (err) {
         console.log(err.message);
@@ -44,7 +44,8 @@ cric.computeFieldingPoints = match => {
             const c = player.catch;
             const p = {};
             const fpoints = calculateFieldingPoints(c, stumped, lbw, bowled, runout);
-            p[name] = fpoints;
+            p['name'] = name
+            p['points'] = fpoints
             fstats.push(p);
         })
     })
@@ -60,7 +61,8 @@ cric.computeBowlingPoints = match => {
             const zeros = player['0s'];
             const p = {};
             const bpoints = calculateBowlingPoints(W, M, NB, WD, zeros, Econ)
-            p[bowler] = bpoints;
+            p['name'] = bowler
+            p['points'] = bpoints
             bstats.push(p);
         })
     })
@@ -77,7 +79,8 @@ cric.computeBattingPoints = match => {
             const sixes = player['6s'];
             const p = {};
             const bpoints = calculateBatingPoints(R, fours, sixes, dismissal, SR, B);
-            p[batsman] = bpoints;
+            p['name'] = batsman
+            p['points'] = bpoints
             bstats.push(p);
         })
     })
@@ -86,12 +89,13 @@ cric.computeBattingPoints = match => {
 
 // Main computation block that collects all points
 cric.computeData = data => {
-    data.forEach(match => {
+    const points = data.map(match => {
         const fieldingPoints = cric.computeFieldingPoints(match.fielding);
         const bowlingPoints = cric.computeBowlingPoints(match.bowling);
         const battingPoints = cric.computeBattingPoints(match.batting);
         return { fieldingPoints, bowlingPoints, battingPoints }
     })
+    return points
 }
 
 module.exports = cric;

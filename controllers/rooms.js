@@ -134,7 +134,31 @@ module.exports.startPlaying = (req, res) => {
             })
             const data = await Promise.all(matchSummary);
             console.log("Signal received");
-            cric.computeData(data);
+            // Receive current match points
+            const listOfPoints = cric.computeData(data);
+            // Returns the union of the given point sets
+            const newSetOfPoints = listOfPoints.map(points => {
+                return [...points.fieldingPoints, ...points.bowlingPoints, ...points.battingPoints]
+            })
+            // Get the intersection players between current match dataset and team players dataset
+            newSetOfPoints.forEach(matchPoints => {
+
+                const teamPoints = rd.teams.map(team => {
+                    let intersection = matchPoints.filter(player => {
+                        let pname = player.name.replace('(c)', '').trim();
+                        return team.players.some(p => pname === p.playerName || pname === p.apiName)
+                    })
+                    const name = team.name
+                    const points = intersection
+                    return { name, points }
+                })
+
+                // Get the calculated points in real time
+                teamPoints.forEach(team => {
+                    s = team.points.reduce((pre, curr) => pre + curr.points, 0)
+                    console.log(`${team.name} scored ${s} points`);
+                })
+            })
         })
 
         //Runs when clients disconnect
