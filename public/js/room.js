@@ -46,12 +46,18 @@ socket.on("balance", ({ balance }) => {
 
 // Runs when game started
 startGame.addEventListener("click", () => {
+    startGame.innerHTML = "<i class='bx bx-stop-circle'></i>&nbsp;<em>Stop playing</em>"
     socket.emit("gameStarted")
     console.log("Signal send");
     setInterval(() => {
         socket.emit("gameStarted")
         console.log("Signal send");
     }, 10000);
+})
+
+// Receive scores from server
+socket.on("scores", ({ op }) => {
+    console.log(op);
 })
 
 // Display current teams 

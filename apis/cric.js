@@ -28,8 +28,8 @@ cric.newMatches = async () => {
 
 cric.fantasySummary = async id => {
     try {
-        const res = await axios.get(`https://cricapi.com/api/fantasySummary?apikey=${process.env.CRIC_API_KEY}&unique_id=1254064`)
-        return res.data.data
+        const res = await axios.get(`https://cricapi.com/api/fantasySummary?apikey=${process.env.CRIC_API_KEY}&unique_id=${id}`)
+        return { id: id, data: res.data.data }
     } catch (err) {
         console.log(err.message);
     }
@@ -90,10 +90,10 @@ cric.computeBattingPoints = match => {
 // Main computation block that collects all points
 cric.computeData = data => {
     const points = data.map(match => {
-        const fieldingPoints = cric.computeFieldingPoints(match.fielding);
-        const bowlingPoints = cric.computeBowlingPoints(match.bowling);
-        const battingPoints = cric.computeBattingPoints(match.batting);
-        return { fieldingPoints, bowlingPoints, battingPoints }
+        const fieldingPoints = cric.computeFieldingPoints(match.data.fielding);
+        const bowlingPoints = cric.computeBowlingPoints(match.data.bowling);
+        const battingPoints = cric.computeBattingPoints(match.data.batting);
+        return { id: match.id, points: { fieldingPoints, bowlingPoints, battingPoints } }
     })
     return points
 }
