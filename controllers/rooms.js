@@ -218,7 +218,3 @@ module.exports.startPlaying = (req, res) => {
     });
     res.render("rooms/room", { style: "room", id: req.params.roomid, ipl });
 }
-
-
-
-// NOsW4NuNwfhIJcPR5HuONbL8NRx2
