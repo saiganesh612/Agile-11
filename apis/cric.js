@@ -15,6 +15,9 @@ cric.newMatches = async () => {
         let month = day.getMonth();
         let year = day.getFullYear();
         let today = `${year}-${month + 1 > 9 ? month + 1 : '0' + (month + 1)}-${date > 9 ? date : '0' + date}`
+
+        if (!response.data.matches) throw "[Error] Api reached max limit count"
+
         // Get relevant data by filtering
         const matches = response.data.matches.filter(match => {
             let day = match.date.slice(0, 10);
@@ -22,7 +25,7 @@ cric.newMatches = async () => {
         })
         return matches
     } catch (err) {
-        console.log(err.message);
+        console.log(err);
     }
 }
 
