@@ -11,6 +11,7 @@ const busl = document.querySelector("#busl");
 const teamsList = document.getElementById("teams-list");
 const balanceAmount = document.getElementById("balance");
 const startGame = document.getElementById("start-game");
+const scores = document.getElementsByClassName("score");
 
 const socket = io();
 
@@ -52,12 +53,16 @@ startGame.addEventListener("click", () => {
     setInterval(() => {
         socket.emit("gameStarted")
         console.log("Signal send");
-    }, 10000);
+    }, 1000 * 60 * 20);
 })
 
 // Receive scores from server
 socket.on("scores", ({ op }) => {
-    console.log(op);
+    Array.from(scores).forEach(score => {
+        let name = score.innerText.replace(/team\s*(\([0-9]*\))*/, "").trim()
+        const player = op.filter(p => p.name === name)[0]
+        score.innerText = `${name} team (${player.score})`
+    })
 })
 
 // Display current teams 
@@ -73,7 +78,7 @@ socket.on("lop", ({ currentTeamData }) => {
                 `
                 <div class="card team" style="width: 15rem;">
                     <div class="card-body">
-                        <h5 class="card-title">${team.name} team</h5>
+                        <h5 class="card-title score">${team.name} team</h5>
                         <hr>
                         ${team.players.map(p => `<p class="card-text">${p.playerName}</p>`).join('')}
                     </div>

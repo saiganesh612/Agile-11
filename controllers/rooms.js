@@ -44,6 +44,16 @@ module.exports.startPlaying = (req, res) => {
 
             // Send the teams list to the user
             socket.emit("lop", { currentTeamData: rd.teams })
+
+            // Get overall points of a paticular player
+            const op = rd.teams.map(team => {
+                let score = 0
+                team.points.forEach(m => score += m.fantasyPoints)
+                return { name: team.name, score }
+            })
+
+            // emit points to client
+            socket.emit("scores", { op })
         })
 
         // Listen for chat message
@@ -127,59 +137,66 @@ module.exports.startPlaying = (req, res) => {
 
         // Logic to start game
         socket.on("gameStarted", async () => {
-            const matches = await cric.newMatches();
-            const matchSummary = matches.map(async match => {
-                const summary = await cric.fantasySummary(match.unique_id);
-                return summary
-            })
-            const data = await Promise.all(matchSummary);
-            console.log("Signal received");
-            // Receive current match points
-            const listOfPoints = cric.computeData(data);
-            // Returns the union of the given point sets
-            const newSetOfPoints = listOfPoints.map(point => {
-                return { id: point.id, data: [...point.points.fieldingPoints, ...point.points.bowlingPoints, ...point.points.battingPoints] }
-            })
+            try {
+                const matches = await cric.newMatches();
 
-            newSetOfPoints.forEach(async matchPoints => {
-                const { id, data } = matchPoints
+                if (!matches) throw "Problem occured in api"
 
-                // Get the intersection players between current match dataset and team players dataset
-                const teamPoints = rd.teams.map(team => {
-                    let intersection = data.filter(player => {
-                        let pname = player.name.replace('(c)', '').trim();
-                        return team.players.some(p => pname === p.playerName || pname === p.apiName)
-                    })
-                    const name = team.name
-                    const points = intersection
-                    return { name, points }
+                const matchSummary = matches.map(async match => {
+                    const summary = await cric.fantasySummary(match.unique_id);
+                    return summary
+                })
+                const data = await Promise.all(matchSummary);
+                console.log("Signal received");
+                // Receive current match points
+                const listOfPoints = cric.computeData(data);
+                // Returns the union of the given point sets
+                const newSetOfPoints = listOfPoints.map(point => {
+                    return { id: point.id, data: [...point.points.fieldingPoints, ...point.points.bowlingPoints, ...point.points.battingPoints] }
                 })
 
-                // Get the calculated points in real time
-                teamPoints.forEach(team => {
-                    score = team.points.reduce((pre, curr) => pre + curr.points, 0)
+                newSetOfPoints.forEach(matchPoints => {
+                    const { id, data } = matchPoints
 
-                    const i = rd.teams.findIndex(p => p.name === team.name)
-                    const player = rd.teams[i]
-                    const index = player.points.findIndex(match => match.matchId === id)
-                    if (index === -1) {
-                        const x = { matchId: id, fantasyPoints: score }
-                        rd.teams[i].points.push(x)
-                        console.log("Created successfully");
-                    } else rd.teams[i].points[index].fantasyPoints = score
+                    // Get the intersection players between current match dataset and team players dataset
+                    const teamPoints = rd.teams.map(team => {
+                        let intersection = data.filter(player => {
+                            let pname = player.name.replace('(c)', '').trim();
+                            return team.players.some(p => pname === p.playerName || pname === p.apiName)
+                        })
+                        const name = team.name
+                        const points = intersection
+                        return { name, points }
+                    })
+
+                    // Get the calculated points in real time
+                    teamPoints.forEach(team => {
+                        score = team.points.reduce((pre, curr) => pre + curr.points, 0)
+
+                        const i = rd.teams.findIndex(p => p.name === team.name)
+                        const player = rd.teams[i]
+                        const index = player.points.findIndex(match => match.matchId === id)
+                        if (index === -1) {
+                            const newMatch = { matchId: id, fantasyPoints: score }
+                            rd.teams[i].points.push(newMatch)
+                        } else rd.teams[i].points[index].fantasyPoints = score
+                    })
                 })
                 await rd.save()
                 console.log("Saved successfully");
 
                 // Get overall points of a paticular player
                 const op = rd.teams.map(team => {
-                    score = team.points.reduce((prev, curr) => prev.fantasyPoints + curr.fantasyPoints)
+                    let score = 0
+                    team.points.forEach(m => score += m.fantasyPoints)
                     return { name: team.name, score }
                 })
 
                 // emit points to client
                 socket.emit("scores", { op })
-            })
+            } catch (err) {
+                console.log("error", err);
+            }
         })
 
         //Runs when clients disconnect
@@ -201,3 +218,7 @@ module.exports.startPlaying = (req, res) => {
     });
     res.render("rooms/room", { style: "room", id: req.params.roomid, ipl });
 }
+
+
+
+// NOsW4NuNwfhIJcPR5HuONbL8NRx2
