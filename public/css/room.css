@@ -85,6 +85,33 @@ body{
   color: #999;
 }
 
+/* ====================== Chat bot end ===================== */
+
+/* ================ Stats section start ================== */
+
+@media (max-width: 700px){
+  #stats{
+    flex-direction: column;
+  }
+  #stats div:nth-of-type(1){
+    width: 300px;
+  }
+  #stats div:nth-of-type(2){
+    width: 100%;
+  }
+  #stats div:nth-of-type(2) div{
+    flex-wrap: inherit;
+    display: flex;
+    width: max-content;
+    align-items: center;
+  }
+  #stats div:nth-of-type(2) div button{
+    margin-left: 1.5em !important;
+  }
+}
+
+/* ================ Stats section end ================== */
+
 /* ================ Team cards start ==================== */
 
 #msg{

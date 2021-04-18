@@ -33,7 +33,7 @@
         <!-- Main content -->
         <div class="col-xl-9 order-sm-1 order-xl-1">
             <div style="margin-left: auto; margin-right: auto; margin-top: 3vh; display: -webkit-box;">
-                <div class="row" style="width: 100%;">
+                <div class="row" style="width: 100%;" id="stats">
                     <div class="col-3">
                         <select id="drop-down" class="form-select form-select-lg mb-3"
                             aria-label=".form-select-lg example">
@@ -43,13 +43,17 @@
                             <option value="odi">ODI</option>
                         </select>
                     </div>
-                    <div class="col-4" style="cursor: not-allowed;">
-                        <button id="select-player" data-bs-toggle="modal" data-bs-target="#money"
-                            class="btn btn-info btn-lg" style="margin-left: 3em;" disabled>
-                            Select player
-                        </button>
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col" style="cursor: not-allowed;">
+                                <button id="select-player" data-bs-toggle="modal" data-bs-target="#money"
+                                    class="btn btn-info btn-lg" style="margin-left: 3em;" disabled>
+                                    Select player
+                                </button>
+                            </div>
+                            <div id="balance" class="col" align="right" style="color: lightgray; text-align: left;"></div>
+                        </div>
                     </div>
-                    <div id="balance" class="col-4" align="right" style="color: lightgray; text-align: left;"></div>
                 </div>
             </div>
             <div class="desktop players-list d-none m-2">
@@ -102,7 +106,7 @@
     </div>
 
     <div class="row text-center">
-        <div class="d-flex justify-content-evenly">
+        <div class="d-flex justify-content-evenly mt-3">
             <h2 style="color: lightgray;"> <em>List of teams in this room</em> </h2>
             <span>
                 <button class="btn btn-success btn-lg" id="start-game">
