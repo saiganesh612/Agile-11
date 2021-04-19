@@ -120,6 +120,10 @@ module.exports.startPlaying = (req, res) => {
                                 socket.emit("balance", { balance: rd.teams[index].balanceAmount });
                             }
 
+                            // Emits transaction history on particular player
+                            io.to(user.room)
+                                .emit("transaction", { tdetails: details, name, winner })
+
                             // Updates the teams list for every user in the room
                             io.to(user.room)
                                 .emit("lop", { currentTeamData: rd.teams })
@@ -127,6 +131,11 @@ module.exports.startPlaying = (req, res) => {
                             io.to(user.room)
                                 .emit("message", formatMsg("Agile-11", `${winner.username} has won ${name} and kept ${winner.money}Cr/-`))
                         } else {
+
+                            // Emits transaction history on particular player
+                            io.to(user.room)
+                                .emit("transaction", { tdetails: details, name, winner })
+
                             io.to(user.room)
                                 .emit("message", formatMsg("Agile-11", `None of your team mates selected ${name} and kept unsold.`))
                         }

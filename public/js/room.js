@@ -12,6 +12,9 @@ const teamsList = document.getElementById("teams-list");
 const balanceAmount = document.getElementById("balance");
 const startGame = document.getElementById("start-game");
 const scores = document.getElementsByClassName("score");
+const theading = document.getElementById("tmetaheading");
+const ttable = document.getElementById("ttable");
+const info = document.getElementById("info")
 
 const socket = io();
 
@@ -36,6 +39,38 @@ socket.on("bul", ({ users }) => {
         ${users.map(user => `<h6>${user.username}</h6>`).join('')}
     `
     $("#bul").modal("show")
+})
+
+// Show transaction details on particular player
+socket.on("transaction", ({ tdetails, name, winner }) => {
+    theading.innerHTML = `<em> Transaction details on ${name} </em>`
+    ttable.innerHTML = `
+        <table class="table table-dark table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">S/N</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price (in Cr)</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${tdetails.map((user, index) => {
+                    return (
+                        `<tr>
+                            <th scope="row">${index + 1}</th>
+                            <td>${user.username}</td>
+                            <td>${user.money}</td>
+                        </tr>`
+                    )
+                }).join('')}
+            </tbody>
+        </table>
+    `
+    info.innerHTML = `${winner.money !== 0 
+        ? `<em> Here, is the winner <b>${winner.username}</b> </em>` 
+        : `<em> None of your teammates selected ${name}. So, we kept as unsold.</em>`
+    }`
+    $("#transaction").modal("show")
 })
 
 // Shows remaining amount of the user
