@@ -42,7 +42,9 @@
             </div>
 
             <div class="row" align="center">
-                <h1 class="mt-2" style="color: rgb(255, 253, 253);"> <em>List of your rooms</em></h1>
+                <h1 class="mt-2 head"> 
+                    <em> <%= rooms.length !== 0 ? 'List of your rooms' : 'Your rooms will be displayed here' %> </em>
+                </h1>
                 <% rooms.forEach(room => { %>
                     <div class="col-xl-6">
                         <div class="card" style="margin:20px;" align="left">
