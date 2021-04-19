@@ -29,10 +29,13 @@
                             </div>
                             <div class="form-floating mb-3">
                                 <input class="form-control" id="password" type="password" placeholder="Enter password"
-                                    name="password" required>
+                                    name="password" minlength="8" required>
                                 <label for="password">Password</label>
                                 <div class="valid-feedback">
                                     Looks good!!
+                                </div>
+                                <div class="invalid-feedback">
+                                    Password should contain minimum 8 characters
                                 </div>
                             </div>
                             <div>
@@ -46,4 +49,4 @@
         </div>
     </div>
 
-<%- include("../partials/footer") %>
+    <%- include("../partials/footer") %>
