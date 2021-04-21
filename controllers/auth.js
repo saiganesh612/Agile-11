@@ -36,7 +36,7 @@ module.exports.forgotPassword = (req, res, next) => {
             });
         },
         (token, done) => {
-            User.findOne({ email: req.body.email }, (err, user) => {
+            User.findOne({ email: { $eq: req.body.email } }, (err, user) => {
                 if (!user) {
                     req.flash('error', 'No account with this email address was registered');
                     return res.redirect('/account/forgotPass');

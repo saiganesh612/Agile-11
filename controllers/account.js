@@ -7,7 +7,7 @@ module.exports.renderForm = (req, res) => {
 module.exports.updateDetails = async (req, res) => {
     try {
         const { username, email } = req.body;
-        const updatedUser = await User.findByIdAndUpdate(req.user._id, { username, email }, { new: true });
+        const updatedUser = await User.findByIdAndUpdate({ $eq: req.user._id }, { username, email }, { new: true });
         req.flash("success", "Changes saved successfully");
         res.redirect("/settings");
     } catch (e) {

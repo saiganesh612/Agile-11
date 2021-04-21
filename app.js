@@ -37,8 +37,8 @@ mongoose.connect(dbUrl, {
 app.set('views', path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.set("scoketio", io);
-app.use(express.static(__dirname + "/public"));
 
+app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
@@ -49,7 +49,7 @@ db.once("open", () => {
     console.log("Mongoose connection established!!");
 })
 
-const secret = process.env.SECRET || "This contains secret value";
+const secret = process.env.SECRET;
 
 const sessionConfigs = {
     name: 'session',
