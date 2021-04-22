@@ -6,8 +6,9 @@ const iplSeries = require("../public/seriesdata/ipl");
 const cric = require("../apis/cric");
 const ipl = iplSeries();
 
-module.exports.startPlaying = (req, res) => {
+module.exports.startPlaying = async (req, res) => {
     const io = global.socketIO;
+    const roomData = await Room.findById(req.params.roomid);
     io.once("connection", socket => {
         // Join in particular room
         let userid, rd;
@@ -225,5 +226,5 @@ module.exports.startPlaying = (req, res) => {
             }
         })
     });
-    res.render("rooms/room", { style: "room", id: req.params.roomid, ipl });
+    res.render("rooms/room", { style: "room", id: req.params.roomid, ipl, admin: roomData.admin });
 }

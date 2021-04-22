@@ -4,6 +4,12 @@
         window.user = '<%- currentUser.username %>'
     </script>
 
+    <style>
+        .display{
+            display: none;
+        }
+    </style>
+
     <div class="row">
         <!-- Chat-bot -->
         <div class="col-xl-3  order-xl-0">
@@ -108,7 +114,7 @@
     <div class="row text-center">
         <div class="d-flex justify-content-evenly mt-3">
             <h2 style="color: lightgray;"> <em>List of teams in this room</em> </h2>
-            <span>
+            <span class="<%= currentUser.username !== admin.username ? 'display': '' %> ">
                 <button class="btn btn-success btn-lg" id="start-game">
                     <i class='bx bx-play-circle'></i>&nbsp;<em>Start Playing</em>
                 </button>
