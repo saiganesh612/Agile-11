@@ -16,9 +16,9 @@
         <a href="/dashboard">
             <i class="icofont-game-console"></i> <span>My Matches</span>
         </a>
-        <a href="#">
+        <!-- <a href="#">
             <i class="icofont-chart-histogram"></i> <span>Metrices</span>
-        </a>
+        </a> -->
         <a href="/settings">
             <i class="icofont-ui-settings"></i> <span>Settings</span>
         </a>
@@ -43,7 +43,7 @@
 
             <div class="row" align="center">
                 <h1 class="mt-2 head"> 
-                    <em> <%= rooms.length !== 0 ? 'List of your rooms' : 'Your rooms will be displayed here' %> </em>
+                    <%= rooms.length !== 0 ? 'List of your rooms' : 'Your rooms will be displayed here' %>
                 </h1>
                 <% rooms.forEach(room => { %>
                     <div class="col-xl-6">
