@@ -51,8 +51,15 @@
                     <li class="nav-item">
                         <a href="/dashboard" class="nav-link">Dashboard</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Services</a>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="services" 
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Services
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="services">
+                            <li><a class="dropdown-item" href="/home">Cricket Scores</a></li>
+                            <li><a class="dropdown-item" href="/dashboard">Fantasy Game</a></li>
+                        </ul>
                     </li>
                 </ul>
                 <div class="navbar-nav">
