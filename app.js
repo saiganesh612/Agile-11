@@ -29,7 +29,7 @@ const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/Agile11";
 mongoose.connect(dbUrl, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-    useCreateIndex: true
+    // useCreateIndex: true
 })
 
 //configuring the various file paths
