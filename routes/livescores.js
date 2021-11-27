@@ -4,9 +4,8 @@ const api = require("../apis/index");
 
 router.get("/home", async (req, res) => {
     try {
-        let matchList = await api.getListOfMatches();
-        console.log(matchList)
-        res.render("matchdata/home", { style: 'home', matchList });
+        // let matchList = await api.getListOfMatches();
+        res.render("matchdata/home", { style: 'home', matchList: { status: 'no results' } });
         console.log("data sent successfully");
     } catch (e) {
         console.log(e.message);
