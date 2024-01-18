@@ -14,11 +14,10 @@ const passport = require("passport");
 const localStrategy = require("passport-local");
 const flash = require("connect-flash");
 const methodOverride = require("method-override");
-const session = require("express-session");
+// const session = require("express-session");
+const session = require("cookie-session")
 
 const User = require("./models/user");
-const Scorecard = require("./models/scorecard");
-const Innings = require("./models/innings");
 
 const userRoutes = require("./routes/Auth");
 const scoreRoutes = require("./routes/livescores");
@@ -48,7 +47,16 @@ db.once("open", () => {
     console.log("Mongoose connection established!!");
 })
 
-const secret = process.env.SECRET;
+const secret = process.env.SECRET || 'This is a secret key';
+const cookieSecretKey = process.env.COOKIE_SECRET_KEY || 'This is cookie secret key';
+
+const cookieConfigs = {
+    name: 'session',
+    keys: [secret, cookieSecretKey],
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 3,
+    maxAge: 1000 * 60 * 60 * 24 * 3
+}
 
 const sessionConfigs = {
     name: 'session',
@@ -62,7 +70,7 @@ const sessionConfigs = {
     }
 }
 
-app.use(session(sessionConfigs));
+app.use(session(cookieConfigs));
 app.use(flash());
 
 //Passport Configuration
